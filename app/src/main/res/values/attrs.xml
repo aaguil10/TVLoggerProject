@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="StatusBarColor" format="color" />
+    <attr name="AppBarColor" format="color" />
+    <attr name="BackgoundColor" format="color" />
+    <attr name="CardDialogColor" format="color" />
+
+    <attr name="PrimaryTextColor" format="color" />
+    <attr name="SecondaryTextColor" format="color" />
+    <attr name="DisabledHintTextColor" format="color" />
+    <attr name="DividersTextColor" format="color" />
+
+
+</resources>

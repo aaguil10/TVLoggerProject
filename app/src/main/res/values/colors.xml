@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="StatusBarColor_light">#E0E0E0</color>
+    <color name="AppBarColor_light">#F5F5F5</color>
+    <color name="BackgoundColor_light">#FAFAFA</color>
+    <color name="CardDialogColor_light">#FFF</color>
+
+    <color name="PrimaryText_light">#DB000000</color>
+    <color name="SecondaryText_light">#8A000000</color>
+    <color name="DisabledHintText_light">#60000000</color>
+    <color name="DividersText_light">#1F000000</color>
+
+    <color name="StatusBarColor_dark">#000</color>
+    <color name="AppBarColor_dark">#212121</color>
+    <color name="BackgoundColor_dark">#303030</color>
+    <color name="CardDialogColor_dark">#424242</color>
+
+
+    <color name="PrimaryText_dark">#ffffffff</color>
+    <color name="SecondaryText_dark">#b3ffffff</color>
+    <color name="DisabledHintText_dark">#80ffffff</color>
+    <color name="DividersText_dark">#1fffffff</color>
+
+    <color name="transparent">#00ffffff</color>
+    <color name="PrimaryColor">#f9a825</color>
+    <color name="PrimaryLightColor">#ffd95a</color>
+    <color name="PrimaryDarkColor">#c17900</color>
+
+
+
+</resources>

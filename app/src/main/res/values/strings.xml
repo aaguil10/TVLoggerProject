@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">TVlog</string>
+    <string name="title_watch">Watchlist</string>
+    <string name="title_browse">Browse</string>
+    <string name="title_finished">Finished</string>
+    <string name="settings">Settings</string>
+
+
+    <string name="in_watchlist">In Watchlist</string>
+    <string name="remove_watch">Remove from Watchlist</string>
+    <string name="add_watchlist">Add to Watchlist</string>
+    <string name="add_finished">Add to Finished</string>
+    <string name="remove_finished">Remove from Finished</string>
+    <string name="not_tracked">Not Tracked</string>
+
+    <string-array name="movie_stat_watchlist">
+        <item>@string/in_watchlist</item>
+        <item>@string/remove_watch</item>
+        <item>@string/title_finished</item>
+    </string-array>
+
+    <string-array name="movie_stat_browse">
+        <item>@string/not_tracked</item>
+        <item>@string/add_watchlist</item>
+        <item>@string/add_finished</item>
+    </string-array>
+
+    <string-array name="movie_stat_finished">
+        <item>@string/title_finished</item>
+        <item>@string/remove_finished</item>
+        <item>@string/add_watchlist</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

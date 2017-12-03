@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/maincontent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="layout.MovieDetailsFragment">
+
+
+    <ImageView
+        android:id="@+id/moviedetails_main_image"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="?BackgoundColor"/>
+
+    <TextView
+        android:id="@+id/moviedetails_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Movie Description" />
+
+    <Spinner
+        android:id="@+id/movie_status_spinner"
+        android:background="@color/PrimaryColor"
+        android:layout_width="match_parent"
+        android:textAlignment="center"
+        android:layout_height="50dp" />
+
+    <ListView
+        android:id="@+id/episode_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"/>
+
+</LinearLayout>

@@ -1,0 +1,39 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <!--<item name="colorAccent">@color/colorAccent</item>-->
+        <!--<item name="CardColor">#000</item>-->
+    </style>
+
+
+    <style name="TVTheme" tools:targetApi="21" parent="android:Theme.Material.Light">
+        <item name="StatusBarColor">@color/StatusBarColor_light</item>
+        <item name="AppBarColor">@color/AppBarColor_light</item>
+        <item name="BackgoundColor">@color/BackgoundColor_light</item>
+        <item name="CardDialogColor">@color/CardDialogColor_light</item>
+
+        <item name="PrimaryTextColor">@color/PrimaryText_light</item>
+        <item name="SecondaryTextColor">@color/SecondaryText_light</item>
+        <item name="DisabledHintTextColor">@color/DisabledHintText_light</item>
+        <item name="DividersTextColor">@color/DividersText_light</item>
+
+    </style>
+
+    <style name="MovieTheme" tools:targetApi="21" parent="android:Theme.Material">
+        <!-- Customize your theme here. -->
+        <item name="StatusBarColor">@color/StatusBarColor_dark</item>
+        <item name="AppBarColor">@color/AppBarColor_dark</item>
+        <item name="BackgoundColor">@color/BackgoundColor_dark</item>
+        <item name="CardDialogColor">@color/CardDialogColor_dark</item>
+
+        <item name="PrimaryTextColor">@color/PrimaryText_dark</item>
+        <item name="SecondaryTextColor">@color/SecondaryText_dark</item>
+        <item name="DisabledHintTextColor">@color/DisabledHintText_dark</item>
+        <item name="DividersTextColor">@color/DividersText_dark</item>
+    </style>
+
+</resources>
