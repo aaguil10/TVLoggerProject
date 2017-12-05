@@ -2,8 +2,8 @@ var express = require('express');
 var request = require('request');
 var router = express.Router();
 
-var api_key = "36a849335545abdd3f76d463d4e0136aa8a9df97c3d4ef7ac2058ebc9bdd9c5c";
-var access_token = "Bearer ae05b0f9b058b2ec3ba9e177bb6e4017249ce2301fd9499067096ebe9acac0ca";
+var api_key = process.env.API_KEY;
+var access_token = process.env.ACCESS_TOKEN;
 
 var bodyParser = require('body-parser');
 router.use(bodyParser.json() );       // to support JSON-encoded bodies
