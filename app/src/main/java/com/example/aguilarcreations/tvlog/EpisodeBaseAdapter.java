@@ -90,8 +90,6 @@ public class EpisodeBaseAdapter extends BaseAdapter {
             }
         }
 
-        Log.d("Alejandro", "Here!");
-
 
         if(epiSlot.isSeason){
             seasonHolder = (SeasonHolder) view.getTag();

@@ -10,17 +10,17 @@ import android.os.Handler;
 
 public class TraktExpert {
 
-    private static String apiGateWayUrl = "http://ec2-34-234-70-85.compute-1.amazonaws.com:3000/";
-    private static String popular_movies_function = "getPopularMovies";
-    private static String get_watchlist_function = "getWatchList";
-    private static String add_watchlist_function = "addToWatchList";
-    private static String remove_watchlist_function = "removeFromWatchList";
-    private static String get_watched_function = "getWatched";
-    private static String add_history_function = "addToHistory";
-    private static String remove_history_function = "removeFromHistory";
-    private static String get_movie_details_function = "getMovieDetails/";
-    private static String get_season_function = "getSeasons/";
-    private static String get_episodes_function = "getEpisodes/";
+    private static String apiGateWayUrl = "http://ec2-34-234-70-85.compute-1.amazonaws.com:8080/";
+    private static String popular_movies_function = "browse/getPopularMovies";
+    private static String get_watchlist_function = "watchlist/getWatchList";
+    private static String add_watchlist_function = "watchlist/addToWatchList";
+    private static String remove_watchlist_function = "watchlist/removeFromWatchList";
+    private static String get_watched_function = "history/getWatched";
+    private static String add_history_function = "history/addToHistory";
+    private static String remove_history_function = "history/removeFromHistory";
+    private static String get_movie_details_function = "details/getMovieDetails/";
+    private static String get_episode_details_function = "details/getEpisodeDetails/";
+    private static String get_episodes_function = "details/getEpisodes/";
 
 
 
@@ -35,6 +35,7 @@ public class TraktExpert {
 
 
     public static void getWatchlist(Handler.Callback callback){
+
         ServerCall serverCall = new ServerCall();
         serverCall.execute(apiGateWayUrl+get_watchlist_function, callback);
     }
@@ -90,14 +91,15 @@ public class TraktExpert {
         serverCall.execute(apiGateWayUrl+get_movie_details_function+mode+"-"+traktid, callback);
     }
 
+    //
     public static void getSeasons(String traktid, Handler.Callback callback){
         ServerCall serverCall = new ServerCall();
         serverCall.execute(apiGateWayUrl+get_episodes_function+traktid, callback);
     }
 
-    public static void getEpisodes(String showid,String seasonid, Handler.Callback callback){
+    public static void getEpisodeDetails(String show_id,String season_num, String epi_num, Handler.Callback callback){
         ServerCall serverCall = new ServerCall();
-        serverCall.execute(apiGateWayUrl+get_episodes_function+showid+"-"+seasonid, callback);
+        serverCall.execute(apiGateWayUrl+get_episode_details_function+show_id+"-"+season_num+"-"+epi_num, callback);
     }
 
 

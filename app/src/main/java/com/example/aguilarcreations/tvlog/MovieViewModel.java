@@ -51,9 +51,9 @@ public class MovieViewModel {
         TraktExpert.getMovieDetails(id, false, getDetailsCallback);
     }
 
-    public void loadEpisodeDetails(String id){
+    public void loadEpisodeDetails(String showid, String season_num, String episode_num){
         Log.d("Alejandro", "Calling loadMovieDetails");
-        //TraktExpert.getE(id, false, getDetailsCallback);
+        TraktExpert.getEpisodeDetails(showid, season_num, episode_num,getEpisodesDetailsCallback);
     }
 
 
@@ -165,14 +165,7 @@ public class MovieViewModel {
             Log.d("Alejandro", "getSeasonsCallback msg: " + msg);
 
             try {
-//                JSONArray seasonArr = new JSONArray(msg);
-//                for (int i = 0; i < seasonArr.length(); i++){
-//                    JSONObject j = seasonArr.getJSONObject(i);
-//                    JSONObject ids = j.getJSONObject("ids");
-//                    String season_traktid = ids.getString("trakt");
-//                    String season_num = j.getString("number");
-//                    TraktExpert.getEpisodes(movie.getImdb_id(), season_num, getEpisodesCallback);
-//                }
+
 
             }catch (Exception e){
                 e.printStackTrace();
@@ -186,29 +179,12 @@ public class MovieViewModel {
         }
     };
 
-    private Handler.Callback getEpisodesCallback = new Handler.Callback() {
+    private Handler.Callback getEpisodesDetailsCallback = new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
             String msg = message.getData().getString(ServerCall.GET_MESSAGE);
             Log.d("Alejandro", "getEpisodesCallback msg: " + msg);
 
-//            try {
-//                JSONArray seasonArr = new JSONArray(msg);
-//                for (int i = 0; i < seasonArr.length(); i++){
-//                    JSONObject j = seasonArr.getJSONObject(i);
-//                    JSONObject ids = j.getJSONObject("ids");
-//                    String season_traktid = ids.getString("trakt");
-//                    TraktExpert.getEpisodes(movie.getImdb_id(), season_traktid, )
-//                }
-//
-//            }catch (Exception e){
-//                e.printStackTrace();
-//                Log.e("Alejandro", "Error getSeasonsCallback e: " + e.toString());
-//            }
-//
-//            Intent intent = new Intent();
-//            intent.setAction(GOT_SEASONS);
-//            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             return false;
         }
     };

@@ -76,7 +76,9 @@ public class MovieDetailsFragment extends Fragment {
             movieViewModel.loadMovieDetails(Integer.toString(movie.getTrakt_id()));
         }else if(episode != null){
             movieViewModel.setEpisode(episode);
-            movieViewModel.loadEpisodeDetails(Integer.toString(episode.getTrakt_id()));
+            movieViewModel.loadEpisodeDetails(Integer.toString(episode.getShow().getTrakt_id()),
+                    Integer.toString(episode.getSeason()),
+                    Integer.toString(episode.getEpi_number()));
         }
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(MovieViewModel.DETAILS_LOADED);

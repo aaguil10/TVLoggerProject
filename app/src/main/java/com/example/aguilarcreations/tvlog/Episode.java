@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 public class Episode extends Item {
 
+    private Show show;
     private int season;
     private int epi_number;
 
@@ -45,6 +46,13 @@ public class Episode extends Item {
     }
 
 
+    public void setShow(Show show){
+        this.show = show;
+    }
+
+    public Show getShow(){
+        return show;
+    }
 
     public void setSeason(int season){
         this.season = season;
