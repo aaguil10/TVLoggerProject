@@ -24,11 +24,11 @@ import layout.WatchlistFragment;
 
 public class EpisodeBaseAdapter extends BaseAdapter {
     private MainActivity activity;
-    public ArrayList<ShowDetailsFragment.EpiSlot> data;
+    public ArrayList<Episode> data;
     Resources res;
     private static LayoutInflater inflater = null;
 
-    public EpisodeBaseAdapter(Activity a, ArrayList<ShowDetailsFragment.EpiSlot> d, Resources resources){
+    public EpisodeBaseAdapter(Activity a, ArrayList<Episode> d, Resources resources){
         activity = (MainActivity) a;
         data = d;
         res = resources;
@@ -70,58 +70,45 @@ public class EpisodeBaseAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
-        ShowDetailsFragment.EpiSlot epiSlot = data.get(i);
-        SeasonHolder seasonHolder;
+        Episode episode = data.get(i);
+        //SeasonHolder seasonHolder;
         EpisodeHolder episodeHolder;
 
-        if (view == null || !isRecyclable(view, epiSlot.isSeason)) {
-            if(epiSlot.isSeason){
-                view = inflater.inflate(R.layout.cell_season, viewGroup, false);
-                seasonHolder = new SeasonHolder();
-                seasonHolder.title = view.findViewById(R.id.cell_season_title);
-                seasonHolder.mark_finshed = view.findViewById(R.id.mark_finshed);
-                view.setTag(seasonHolder);
-            }else {
-                view = inflater.inflate(R.layout.cell_episode, viewGroup, false);
-                episodeHolder = new EpisodeHolder();
-                episodeHolder.title = view.findViewById(R.id.cell_episode_title);
-                episodeHolder.epi_details_button = view.findViewById(R.id.epi_details_button);
-                view.setTag(episodeHolder);
+        if (view == null) {
+            view = inflater.inflate(R.layout.cell_episode, viewGroup, false);
+            episodeHolder = new EpisodeHolder();
+            episodeHolder.title = view.findViewById(R.id.cell_episode_title);
+            episodeHolder.epi_details_button = view.findViewById(R.id.epi_details_button);
+            view.setTag(episodeHolder);
+        }
+        episodeHolder = (EpisodeHolder) view.getTag();
+        final Episode epi = data.get(i);
+        episodeHolder.title.setText(epi.getEpi_number() + ". " +episode.getTitle());
+        episodeHolder.epi_details_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openEpisodeDetails(epi);
             }
-        }
+        });
 
-
-        if(epiSlot.isSeason){
-            seasonHolder = (SeasonHolder) view.getTag();
-            seasonHolder.title.setText("Season " + epiSlot.season_num);
-        }else {
-            episodeHolder = (EpisodeHolder) view.getTag();
-            final Episode episode = data.get(i).episode;
-            episodeHolder.title.setText(epiSlot.epi_num + ". " +episode.getTitle());
-            episodeHolder.epi_details_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    openEpisodeDetails(episode);
-                }
-            });
-        }
         return view;
     }
 
-    private boolean isRecyclable(View v, boolean isSeason){
-        if(isSeason) {
-            if (v.getTag().getClass() == SeasonHolder.class) {
-                return true;
-            }
-        }else{
-            if(v.getTag().getClass() == EpisodeHolder.class){
-                return true;
-            }
-        }
-        return false;
-    }
+//    private boolean isRecyclable(View v, boolean isSeason){
+//        if(isSeason) {
+//            if (v.getTag().getClass() == SeasonHolder.class) {
+//                return true;
+//            }
+//        }else{
+//            if(v.getTag().getClass() == EpisodeHolder.class){
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     private void openEpisodeDetails(Episode episode){
+        Log.d("Alejandro", "openEpisodeDetails episode: " + episode.toString());
         activity.onEpisodeSelected(episode);
     }
 

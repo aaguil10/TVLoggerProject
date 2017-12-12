@@ -44,7 +44,6 @@ public class MovieDetailsFragment extends Fragment {
     }
 
     /**
-     * @param Movie is the movie beeing displayed.
      * @return A new instance of fragment MovieDetailsFragment.
      */
     public static MovieDetailsFragment newInstance(Movie movie) {
@@ -72,13 +71,18 @@ public class MovieDetailsFragment extends Fragment {
         fragment = this;
         movieViewModel = activity.movieViewModel;
         if (movie != null) {
+            Log.d("Alejandro", "Hit movie!");
             movieViewModel.setMovie(movie);
             movieViewModel.loadMovieDetails(Integer.toString(movie.getTrakt_id()));
         }else if(episode != null){
+            Log.d("Alejandro", "Hit episode!");
             movieViewModel.setEpisode(episode);
+            Log.d("Alejandro", "episode.getShow(): " + episode.toString());
             movieViewModel.loadEpisodeDetails(Integer.toString(episode.getShow().getTrakt_id()),
                     Integer.toString(episode.getSeason()),
                     Integer.toString(episode.getEpi_number()));
+        }else{
+            Log.d("Alejandro", "NO BANANAS");
         }
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(MovieViewModel.DETAILS_LOADED);

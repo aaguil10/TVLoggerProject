@@ -147,6 +147,36 @@ public class ShowDetailsFragment extends Fragment {
         });
     }
 
+    private void setupSeasonSpinner(View v, int current_season, String[] seasons){
+        Spinner spinner = v.findViewById(R.id.season_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
+                 android.R.layout.simple_spinner_item, seasons);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setSelection(current_season);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                //Update episode listview
+                ArrayList<Episode> list = new ArrayList<>();
+                for (Episode episode : showViewModel.getEpisodes(i)) {
+                    list.add(episode);
+                }
+                ListView episode_listview = fragment.getView().findViewById(R.id.episode_listview);
+                EpisodeBaseAdapter episodeBaseAdapter;
+                episodeBaseAdapter = new EpisodeBaseAdapter(getActivity(), list, getResources());
+                episode_listview.setAdapter(episodeBaseAdapter);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+
     private void setupActionBar(){
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setTitle(show.getTitle());
@@ -193,45 +223,39 @@ public class ShowDetailsFragment extends Fragment {
                 }
             }else if(MovieViewModel.GOT_SEASONS.equals(intent.getAction())){
                 Toast.makeText(context, "Got Seasons", Toast.LENGTH_LONG).show();
+
+                String[] seasons = new String[showViewModel.getNumSeasons()];
+                for (int i = 0; i < showViewModel.getNumSeasons(); i++) {
+                        seasons[i]="Season " + i;
+                }
+                setupSeasonSpinner(getView(), 1, seasons);
+
+
+                ArrayList<Episode> list = new ArrayList<>();
+                for (Episode episode : showViewModel.getEpisodes(1)) {
+                    list.add(episode);
+                }
                 ListView episode_listview = fragment.getView().findViewById(R.id.episode_listview);
                 EpisodeBaseAdapter episodeBaseAdapter;
-                ArrayList<EpiSlot> list = new ArrayList<>();
-                int counter = 0;
-                for (int i = 0; i < showViewModel.getNumSeasons(); i++) {
-                        EpiSlot epiSlot = new EpiSlot(true);
-                        epiSlot.season_num = i;
-                        list.add(epiSlot);
-                        for (Episode episode : showViewModel.getEpisodes(i)) {
-                            EpiSlot epi = new EpiSlot(false);
-                            if(i != 0) {
-                                epi.epi_num = ++counter;
-                            }else{
-                                epi.epi_num = 0;
-                            }
-                            epi.episode = episode;
-                            list.add(epi);
-                        }
-                }
                 episodeBaseAdapter = new EpisodeBaseAdapter(getActivity(), list, getResources());
                 episode_listview.setAdapter(episodeBaseAdapter);
-
             }
         }
     };
 
-    public class EpiSlot{
-        public Episode episode;
-        public int season_num;
-        public boolean isSeason;
-        public int epi_num;
-
-        public EpiSlot(Boolean isSeason){
-            this.isSeason = isSeason;
-
-        }
-
-
-    }
+//    public class EpiSlot{
+//        public Episode episode;
+//        public int season_num;
+//        public boolean isSeason;
+//        public int epi_num;
+//
+//        public EpiSlot(Boolean isSeason){
+//            this.isSeason = isSeason;
+//
+//        }
+//
+//
+//    }
 
 
 

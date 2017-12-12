@@ -52,7 +52,7 @@ public class MovieViewModel {
     }
 
     public void loadEpisodeDetails(String showid, String season_num, String episode_num){
-        Log.d("Alejandro", "Calling loadMovieDetails");
+        Log.d("Alejandro", "Calling loadEpisodeDetails");
         TraktExpert.getEpisodeDetails(showid, season_num, episode_num,getEpisodesDetailsCallback);
     }
 
