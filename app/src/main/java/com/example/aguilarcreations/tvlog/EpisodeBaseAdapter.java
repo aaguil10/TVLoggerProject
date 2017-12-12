@@ -56,12 +56,6 @@ public class EpisodeBaseAdapter extends BaseAdapter {
         return 0;
     }
 
-
-    public class SeasonHolder{
-        public TextView title;
-        public ImageButton mark_finshed;
-    }
-
     public class EpisodeHolder{
         public TextView title;
         public ImageButton epi_details_button;
@@ -71,7 +65,6 @@ public class EpisodeBaseAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
 
         Episode episode = data.get(i);
-        //SeasonHolder seasonHolder;
         EpisodeHolder episodeHolder;
 
         if (view == null) {
@@ -82,8 +75,11 @@ public class EpisodeBaseAdapter extends BaseAdapter {
             view.setTag(episodeHolder);
         }
         episodeHolder = (EpisodeHolder) view.getTag();
+
+
         final Episode epi = data.get(i);
-        episodeHolder.title.setText(epi.getEpi_number() + ". " +episode.getTitle());
+        String entry = String.format("%s. %s", epi.getEpi_number(), episode.getTitle());
+        episodeHolder.title.setText(entry);
         episodeHolder.epi_details_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,21 +90,7 @@ public class EpisodeBaseAdapter extends BaseAdapter {
         return view;
     }
 
-//    private boolean isRecyclable(View v, boolean isSeason){
-//        if(isSeason) {
-//            if (v.getTag().getClass() == SeasonHolder.class) {
-//                return true;
-//            }
-//        }else{
-//            if(v.getTag().getClass() == EpisodeHolder.class){
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-
     private void openEpisodeDetails(Episode episode){
-        Log.d("Alejandro", "openEpisodeDetails episode: " + episode.toString());
         activity.onEpisodeSelected(episode);
     }
 

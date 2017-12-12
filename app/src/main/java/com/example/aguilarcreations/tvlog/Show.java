@@ -89,6 +89,7 @@ public class Show extends Item{
             JSONArray epi_arr = j.getJSONArray("episodes");
             for (int x = 0; x < epi_arr.length(); x++){
                 Episode episode = Episode.createEpisodeFromJson(epi_arr.getJSONObject(x), Item.BROWSE);
+                episode.setShow(this);
                 episode.setSeason(curr_season);
                 episodes.add(episode);
             }

@@ -1,5 +1,7 @@
 package com.example.aguilarcreations.tvlog;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -68,6 +70,22 @@ public class Episode extends Item {
 
     public int getEpi_number(){
         return epi_number;
+    }
+
+    public String toString(){
+        Log.d("Alejandro", "Episode.toString Called!");
+        String result = "{";
+        result += "\"title\":" + getTitle();
+        result += ", \"trackt_id\":" + getTrakt_id();
+        if(show != null) {
+            result += ", \"show\":" + getShow().toString();
+        }else{
+            result += ", \"show\": null";
+        }
+        Log.d("Alejandro", "result: "+ result);
+        result += "}";
+        Log.d("Alejandro", "--result: "+ result);
+        return result;
     }
 
 

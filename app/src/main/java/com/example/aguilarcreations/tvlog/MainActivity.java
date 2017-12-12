@@ -182,6 +182,7 @@ public class MainActivity extends Activity implements
     }
 
     public void onEpisodeSelected(Episode episode){
+        Log.d("Alejandro", "onEpisodeSelected episode: " + episode.toString());
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         MovieDetailsFragment fragment = MovieDetailsFragment.newInstance(episode);

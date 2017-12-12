@@ -77,7 +77,7 @@ public class MovieDetailsFragment extends Fragment {
         }else if(episode != null){
             Log.d("Alejandro", "Hit episode!");
             movieViewModel.setEpisode(episode);
-            Log.d("Alejandro", "episode.getShow(): " + episode.toString());
+            Log.d("Alejandro", "episode: " + episode.toString());
             movieViewModel.loadEpisodeDetails(Integer.toString(episode.getShow().getTrakt_id()),
                     Integer.toString(episode.getSeason()),
                     Integer.toString(episode.getEpi_number()));

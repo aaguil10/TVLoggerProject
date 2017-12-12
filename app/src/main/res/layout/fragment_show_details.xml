@@ -17,14 +17,8 @@
         android:id="@+id/moviedetails_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Movie Description" />
+        tools:text="Show Description" />
 
-    <Spinner
-        android:id="@+id/movie_status_spinner"
-        android:background="@color/PrimaryColor"
-        android:layout_width="match_parent"
-        android:textAlignment="center"
-        android:layout_height="50dp" />
 
     <Spinner
         android:id="@+id/season_spinner"

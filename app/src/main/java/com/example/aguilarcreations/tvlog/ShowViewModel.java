@@ -20,11 +20,8 @@ import java.util.ArrayList;
 public class ShowViewModel {
     private static ShowViewModel instance = null;
     public static final String DETAILS_LOADED = "movie_details_loaded";
-    public static final String ADDED_WATCHLIST = "added_watchlist";
-    public static final String ADDED_FINISHED = "added_finished";
-    public static final String REMOVED_WATCHLIST = "removed_watchlist";
-    public static final String REMOVED_FINISHED = "removed_finished";
     public static final String GOT_SEASONS = "got_seasons";
+    String TAG = ShowViewModel.class.getName();
 
     Show show = null;
     Context context;
@@ -45,8 +42,7 @@ public class ShowViewModel {
         this.show = show;
     }
 
-    public void loadMovieDetails(String id){
-        Log.d("Alejandro", "Calling loadMovieDetails");
+    public void loadShowDetails(String id){
         TraktExpert.getMovieDetails(id, false, getDetailsCallback);
     }
 
@@ -54,14 +50,12 @@ public class ShowViewModel {
         @Override
         public boolean handleMessage(Message message) {
             String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "getDetailsCallback msg: " + msg);
             try {
                 JSONArray j = new JSONArray(msg);
                 show.addDetails(j);
-                Log.d("Alejandro", "m: " + show.toString());
             }catch (JSONException e){
                 e.printStackTrace();
-                Log.e("Alejandro", "Error getDetailsCallback: " + e.toString());
+                Log.e(TAG, "Error getDetailsCallback: " + e.toString());
             }
 
             Intent intent = new Intent();
@@ -71,89 +65,15 @@ public class ShowViewModel {
         }
     };
 
-    public void addToWatchlist(){
-        Log.d("Alejandro", "Calling addToWatchlist");
-        TraktExpert.addToWatchlist(show, addWatchlistCallback);
-    }
-
-    public void removeWatchlist(){
-        Log.d("Alejandro", "Calling removeWatchlist");
-        TraktExpert.removeWatchlist(show, removeWatchlistCallback);
-    }
-
-    public void addToFinshed(){
-        Log.d("Alejandro", "Calling addToFinshed");
-        TraktExpert.addToFinished(show, addFinishedCallback);
-    }
-
-    public void removeFinshed(){
-        Log.d("Alejandro", "Calling removeFinshed");
-        TraktExpert.removedFromFinished(show, removedFinishedCallback);
-    }
-
     public void getSeasons(){
-        Log.d("Alejandro", "Calling getSeasons");
         TraktExpert.getSeasons(show.getImdb_id(), getSeasonsCallback);
     }
-
-    private Handler.Callback addWatchlistCallback = new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message message) {
-            String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "addWatchlistCallback msg: " + msg);
-
-            Intent intent = new Intent();
-            intent.setAction(ADDED_WATCHLIST);
-            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-            return false;
-        }
-    };
-
-    private Handler.Callback removeWatchlistCallback = new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message message) {
-            String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "removeWatchlistCallback msg: " + msg);
-
-            Intent intent = new Intent();
-            intent.setAction(REMOVED_WATCHLIST);
-            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-            return false;
-        }
-    };
-
-    private Handler.Callback addFinishedCallback = new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message message) {
-            String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "addFinishedCallback msg: " + msg);
-
-            Intent intent = new Intent();
-            intent.setAction(ADDED_FINISHED);
-            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-            return false;
-        }
-    };
-
-    private Handler.Callback removedFinishedCallback = new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message message) {
-            String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "removedFinishedCallback msg: " + msg);
-
-            Intent intent = new Intent();
-            intent.setAction(REMOVED_FINISHED);
-            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-            return false;
-        }
-    };
 
 
     private Handler.Callback getSeasonsCallback = new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
             String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "getSeasonsCallback msg: " + msg);
 
             try {
                 JSONArray seasonArr = new JSONArray(msg);
@@ -161,7 +81,7 @@ public class ShowViewModel {
 
             }catch (Exception e){
                 e.printStackTrace();
-                Log.e("Alejandro", "Error getSeasonsCallback e: " + e.toString());
+                Log.e(TAG, "Error getSeasonsCallback e: " + e.toString());
             }
 
             Intent intent = new Intent();

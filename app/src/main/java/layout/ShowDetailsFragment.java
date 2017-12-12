@@ -22,8 +22,6 @@ import android.widget.Toast;
 import com.example.aguilarcreations.tvlog.Episode;
 import com.example.aguilarcreations.tvlog.EpisodeBaseAdapter;
 import com.example.aguilarcreations.tvlog.Item;
-import com.example.aguilarcreations.tvlog.MainActivity;
-import com.example.aguilarcreations.tvlog.Movie;
 import com.example.aguilarcreations.tvlog.MovieViewModel;
 import com.example.aguilarcreations.tvlog.R;
 import com.example.aguilarcreations.tvlog.Show;
@@ -32,7 +30,6 @@ import com.example.aguilarcreations.tvlog.ShowViewModel;
 import java.util.ArrayList;
 
 /**
- * A simple {@link Fragment} subclass.
  * Use the {@link ShowDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
@@ -68,7 +65,7 @@ public class ShowDetailsFragment extends Fragment {
         showViewModel = ShowViewModel.getInstance(getActivity());
         if (show != null) {
             showViewModel.setShow(show);
-            showViewModel.loadMovieDetails(Integer.toString(show.getTrakt_id()));
+            showViewModel.loadShowDetails(Integer.toString(show.getTrakt_id()));
         }
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(MovieViewModel.DETAILS_LOADED);
@@ -89,63 +86,13 @@ public class ShowDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_show_details, container, false);
         setupActionBar();
-
-        setupSpinner(v);
         showViewModel.getSeasons();
-
 
         return v;
     }
 
-    private void setupSpinner(View v){
-        Spinner spinner = v.findViewById(R.id.movie_status_spinner);
-        int spinner_strings;
-        switch (show.getState()){
-            case Item.WATCHLIST:
-                spinner_strings = R.array.movie_stat_watchlist;
-                break;
-            case Item.BROWSE:
-                spinner_strings = R.array.movie_stat_browse;
-                break;
-            case Item.FINISHED:
-                spinner_strings = R.array.movie_stat_finished;
-                break;
-            default:
-                spinner_strings = R.array.movie_stat_watchlist;
-        }
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-                spinner_strings, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String s = (String) adapterView.getItemAtPosition(i);
-                Log.d("Alejandro", "selected: " + s);
-                if(getString(R.string.remove_watch).equals(s)){
-                    showViewModel.removeWatchlist();
-                }else if(getString(R.string.add_watchlist).equals(s)){
-                    showViewModel.addToWatchlist();
-                    if(show.getState().equals(Item.FINISHED)){
-                        showViewModel.removeFinshed();
-                    }
-                }else if(getString(R.string.add_finished).equals(s)){
-                    showViewModel.addToFinshed();
-                    if(show.getState().equals(Item.WATCHLIST)){
-                        showViewModel.removeWatchlist();
-                    }
-                }else if(getString(R.string.remove_finished).equals(s)){
-                    showViewModel.removeFinshed();
-                }
 
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-    }
 
     private void setupSeasonSpinner(View v, int current_season, String[] seasons){
         Spinner spinner = v.findViewById(R.id.season_spinner);
