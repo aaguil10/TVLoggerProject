@@ -90,12 +90,9 @@ public class ShowDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_show_details, container, false);
         setupActionBar();
+        setupActionMenu(v);
         showViewModel.getSeasons();
 
-        FloatingActionMenuAnimator.BtnData[] btnData = new FloatingActionMenuAnimator.BtnData[2];
-        btnData[0] = new FloatingActionMenuAnimator.BtnData("Stop Tracking",R.drawable.ic_remove_black_24dp);
-        btnData[1] = new FloatingActionMenuAnimator.BtnData("Start Tracking",R.drawable.ic_watchlist_black_24dp);
-        FloatingActionMenuAnimator floatingActionMenuAnimator = FloatingActionMenuAnimator.build(v, btnData);
 
         return v;
     }
@@ -140,6 +137,13 @@ public class ShowDetailsFragment extends Fragment {
         actionBar.setHomeButtonEnabled(true);
     }
 
+    private void setupActionMenu(View v){
+        FloatingActionMenuAnimator.BtnData[] btnData = new FloatingActionMenuAnimator.BtnData[2];
+        btnData[0] = new FloatingActionMenuAnimator.BtnData("Stop Tracking",R.drawable.ic_remove_black_24dp);
+        btnData[1] = new FloatingActionMenuAnimator.BtnData("Start Tracking",R.drawable.ic_watchlist_black_24dp);
+        FloatingActionMenuAnimator floatingActionMenuAnimator = FloatingActionMenuAnimator.build(v, btnData);
+    }
+
     @Override
     public void onAttach(Context context) {
         Log.d("Lifecycle", "ShowDetailsFragment onAttach");
@@ -178,23 +182,26 @@ public class ShowDetailsFragment extends Fragment {
                     show.setState(Item.BROWSE);
                 }
             }else if(MovieViewModel.GOT_SEASONS.equals(intent.getAction())){
-                Toast.makeText(context, "Got Seasons", Toast.LENGTH_LONG).show();
+                if(getView() != null) {
+                    Toast.makeText(context, "Got Seasons", Toast.LENGTH_LONG).show();
 
-                String[] seasons = new String[showViewModel.getNumSeasons()];
-                for (int i = 0; i < showViewModel.getNumSeasons(); i++) {
-                        seasons[i]="Season " + i;
+                    String[] seasons = new String[showViewModel.getNumSeasons()];
+                    for (int i = 0; i < showViewModel.getNumSeasons(); i++) {
+                        seasons[i] = "Season " + i;
+                    }
+
+                    setupSeasonSpinner(getView(), 1, seasons);
+
+
+                    ArrayList<Episode> list = new ArrayList<>();
+                    for (Episode episode : showViewModel.getEpisodes(1)) {
+                        list.add(episode);
+                    }
+                    ListView episode_listview = fragment.getView().findViewById(R.id.episode_listview);
+                    EpisodeBaseAdapter episodeBaseAdapter;
+                    episodeBaseAdapter = new EpisodeBaseAdapter(getActivity(), list, getResources());
+                    episode_listview.setAdapter(episodeBaseAdapter);
                 }
-                setupSeasonSpinner(getView(), 1, seasons);
-
-
-                ArrayList<Episode> list = new ArrayList<>();
-                for (Episode episode : showViewModel.getEpisodes(1)) {
-                    list.add(episode);
-                }
-                ListView episode_listview = fragment.getView().findViewById(R.id.episode_listview);
-                EpisodeBaseAdapter episodeBaseAdapter;
-                episodeBaseAdapter = new EpisodeBaseAdapter(getActivity(), list, getResources());
-                episode_listview.setAdapter(episodeBaseAdapter);
             }
         }
     };

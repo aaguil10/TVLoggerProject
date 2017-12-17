@@ -49,12 +49,12 @@
     </LinearLayout>
 
         <include
-            android:id="@+id/showdetails_floating_action_button_menu"
+            android:id="@+id/action_button_menu"
             android:visibility="gone"
             layout="@layout/floating_action_button_menu"/>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/showdetails_action_btn"
+        android:id="@+id/action_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add_black_24dp"

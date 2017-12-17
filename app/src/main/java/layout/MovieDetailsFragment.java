@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aguilarcreations.tvlog.Episode;
+import com.example.aguilarcreations.tvlog.FloatingActionMenuAnimator;
 import com.example.aguilarcreations.tvlog.Item;
 import com.example.aguilarcreations.tvlog.MainActivity;
 import com.example.aguilarcreations.tvlog.Movie;
@@ -100,70 +101,14 @@ public class MovieDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_movie_details, container, false);
         setupActionBar();
+        setupActionMenu(v);
 
-        setupSpinner(v);
+        //setupSpinner(v);
 
 
         return v;
     }
 
-
-    private void setupSpinner(View v){
-        Spinner spinner = v.findViewById(R.id.movie_status_spinner);
-        int spinner_strings;
-        String state = null;
-        if(movie != null){
-          state = movie.getState();
-        }else if(episode != null){
-            state = episode.getState();
-        }
-
-        switch (state){
-            case Item.WATCHLIST:
-                spinner_strings = R.array.movie_stat_watchlist;
-                break;
-            case Item.BROWSE:
-                spinner_strings = R.array.movie_stat_browse;
-                break;
-            case Item.FINISHED:
-                spinner_strings = R.array.movie_stat_finished;
-                break;
-            default:
-                spinner_strings = R.array.movie_stat_watchlist;
-        }
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity.getBaseContext(),
-                spinner_strings, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String s = (String) adapterView.getItemAtPosition(i);
-                Log.d("Alejandro", "selected: " + s);
-                if(getString(R.string.remove_watch).equals(s)){
-                    movieViewModel.removeWatchlist();
-                }else if(getString(R.string.add_watchlist).equals(s)){
-                    movieViewModel.addToWatchlist();
-                    if(movie.getState().equals(Item.FINISHED)){
-                        movieViewModel.removeFinshed();
-                    }
-                }else if(getString(R.string.add_finished).equals(s)){
-                    movieViewModel.addToFinshed();
-                    if(movie.getState().equals(Item.WATCHLIST)){
-                        movieViewModel.removeWatchlist();
-                    }
-                }else if(getString(R.string.remove_finished).equals(s)){
-                    movieViewModel.removeFinshed();
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-    }
 
     private void setupActionBar(){
         ActionBar actionBar = activity.getActionBar();
@@ -174,6 +119,34 @@ public class MovieDetailsFragment extends Fragment {
         }
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
+    }
+
+    private void setupActionMenu(View v){
+        FloatingActionMenuAnimator.BtnData[] btnData = new FloatingActionMenuAnimator.BtnData[3];
+        btnData[0] = new FloatingActionMenuAnimator.BtnData("Stop Tracking",R.drawable.ic_remove_black_24dp);
+        btnData[1] = new FloatingActionMenuAnimator.BtnData("Add to Finshed",R.drawable.ic_playlist_add_check_black_24dp);
+        btnData[2] = new FloatingActionMenuAnimator.BtnData("Add to Watchlist",R.drawable.ic_watchlist_black_24dp);
+        FloatingActionMenuAnimator floatingActionMenuAnimator = FloatingActionMenuAnimator.build(v, btnData);
+        floatingActionMenuAnimator.getActionButton(0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                movieViewModel.removeWatchlist();
+                movieViewModel.removeFinshed();
+            }
+        });
+        floatingActionMenuAnimator.getActionButton(1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                movieViewModel.addToFinshed();
+            }
+        });
+        floatingActionMenuAnimator.getActionButton(2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                movieViewModel.addToWatchlist();
+            }
+        });
+
     }
 
     @Override

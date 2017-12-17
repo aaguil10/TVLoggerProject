@@ -30,10 +30,10 @@ public class FloatingActionMenuAnimator {
     }
 
     static public FloatingActionMenuAnimator build(View v, BtnData[] data){
-        instance.actionButton = v.findViewById(R.id.showdetails_action_btn);
+        instance.actionButton = v.findViewById(R.id.action_btn);
         instance.actionButton.setVisibility(View.VISIBLE);
 
-        instance.actionMenu = v.findViewById(R.id.showdetails_floating_action_button_menu);
+        instance.actionMenu = v.findViewById(R.id.action_button_menu);
 
 
         instance.buttons = new ArrayList<>();
@@ -69,8 +69,10 @@ public class FloatingActionMenuAnimator {
             @Override
             public void onClick(View view) {
                 if (instance.actionMenu.getVisibility() == View.GONE) {
+                    instance.actionButton.setImageResource(R.drawable.ic_close_black_24dp);
                     instance.open();
                 } else {
+                    instance.actionButton.setImageResource(R.drawable.ic_add_black_24dp);
                     instance.close();
                 }
             }
@@ -140,6 +142,13 @@ public class FloatingActionMenuAnimator {
             });
             animation.start();
         }
+    }
+
+    public FloatingActionButton getActionButton(int index){
+        if(index < buttons.size()){
+            return buttons.get(index).btn;
+        }
+        return null;
     }
 
 
