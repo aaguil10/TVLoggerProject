@@ -1,5 +1,6 @@
 package layout;
 
+import android.animation.ObjectAnimator;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
@@ -7,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.aguilarcreations.tvlog.Episode;
 import com.example.aguilarcreations.tvlog.EpisodeBaseAdapter;
+import com.example.aguilarcreations.tvlog.FloatingActionMenuAnimator;
 import com.example.aguilarcreations.tvlog.Item;
 import com.example.aguilarcreations.tvlog.MovieViewModel;
 import com.example.aguilarcreations.tvlog.R;
@@ -75,6 +78,7 @@ public class ShowDetailsFragment extends Fragment {
         intentFilter.addAction(MovieViewModel.REMOVED_FINISHED);
         intentFilter.addAction(MovieViewModel.GOT_SEASONS);
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(showReceiver, intentFilter);
+
     }
 
 
@@ -87,6 +91,10 @@ public class ShowDetailsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_show_details, container, false);
         setupActionBar();
         showViewModel.getSeasons();
+
+        FloatingActionMenuAnimator.BtnData[] btnData = new FloatingActionMenuAnimator.BtnData[1];
+        btnData[0] = new FloatingActionMenuAnimator.BtnData("Stop Tracking",R.drawable.ic_remove_black_24dp);
+        FloatingActionMenuAnimator floatingActionMenuAnimator = FloatingActionMenuAnimator.build(v, btnData);
 
         return v;
     }
@@ -190,19 +198,6 @@ public class ShowDetailsFragment extends Fragment {
         }
     };
 
-//    public class EpiSlot{
-//        public Episode episode;
-//        public int season_num;
-//        public boolean isSeason;
-//        public int epi_num;
-//
-//        public EpiSlot(Boolean isSeason){
-//            this.isSeason = isSeason;
-//
-//        }
-//
-//
-//    }
 
 
 

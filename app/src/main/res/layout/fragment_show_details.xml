@@ -1,36 +1,70 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/maincontent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/maincontent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="layout.MovieDetailsFragment">
 
-
-    <ImageView
-        android:id="@+id/moviedetails_main_image"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="?BackgoundColor"/>
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/moviedetails_description"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/moviedetails_main_image"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="?BackgoundColor" />
+
+        <TextView
+            android:id="@+id/moviedetails_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Show Description" />
+
+
+        <Spinner
+            android:id="@+id/season_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/PrimaryColor"
+            android:textAlignment="center" />
+
+        <ListView
+            android:id="@+id/episode_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff" />
+    </LinearLayout>
+
+        <include
+            android:id="@+id/showdetails_floating_action_button_menu"
+            android:visibility="gone"
+            layout="@layout/floating_action_button_menu"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/showdetails_action_btn"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Show Description" />
+        android:src="@drawable/ic_add_black_24dp"
+        app:backgroundTint="@color/PrimaryColor"
+        android:layout_marginBottom="25dp"
+        android:layout_marginRight="25dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:fabSize="normal" />
 
+    </android.support.constraint.ConstraintLayout>
 
-    <Spinner
-        android:id="@+id/season_spinner"
-        android:background="@color/PrimaryColor"
-        android:layout_width="match_parent"
-        android:textAlignment="center"
-        android:layout_height="50dp" />
-
-    <ListView
-        android:id="@+id/episode_listview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#fff"/>
-
-</LinearLayout>
+</FrameLayout>
