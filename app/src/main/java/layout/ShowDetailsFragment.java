@@ -92,8 +92,9 @@ public class ShowDetailsFragment extends Fragment {
         setupActionBar();
         showViewModel.getSeasons();
 
-        FloatingActionMenuAnimator.BtnData[] btnData = new FloatingActionMenuAnimator.BtnData[1];
+        FloatingActionMenuAnimator.BtnData[] btnData = new FloatingActionMenuAnimator.BtnData[2];
         btnData[0] = new FloatingActionMenuAnimator.BtnData("Stop Tracking",R.drawable.ic_remove_black_24dp);
+        btnData[1] = new FloatingActionMenuAnimator.BtnData("Start Tracking",R.drawable.ic_watchlist_black_24dp);
         FloatingActionMenuAnimator floatingActionMenuAnimator = FloatingActionMenuAnimator.build(v, btnData);
 
         return v;

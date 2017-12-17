@@ -21,8 +21,8 @@ public class FloatingActionMenuAnimator {
     private static final FloatingActionMenuAnimator instance = new FloatingActionMenuAnimator();
 
 
-    int ANIMATION_DISTANCE = 200;
-    int ANIMATION_DURATION = 200; //2 ms
+    private static final int ANIMATION_DISTANCE = 200;
+    private static final int ANIMATION_DURATION = 200; //2 ms
 
 
 
@@ -39,7 +39,7 @@ public class FloatingActionMenuAnimator {
         instance.buttons = new ArrayList<>();
         int counter = 1;
         for(BtnData btn_data:data) {
-            ViewHolder button = new ViewHolder();
+            ViewHolder button = new ViewHolder(counter);
             int btn_resID = instance.actionMenu.getResources().getIdentifier("floting_action_btn"+ counter,
                     "id", v.getContext().getPackageName());
             button.btn = instance.actionMenu.findViewById(btn_resID);
@@ -56,23 +56,22 @@ public class FloatingActionMenuAnimator {
                 button.btn.setImageResource(btn_data.icon);
             }
             if(btn_data.label != null){
-                button.card.setTranslationY(button.card.getY()-200);
+                button.card.setTranslationY(button.card.getY()-(ANIMATION_DISTANCE*counter));
                 button.text.setText(btn_data.label);
             }
 
             instance.buttons.add(button);
+
+
             counter++;
         }
-
         instance.actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (ViewHolder button : instance.buttons) {
-                    if (instance.actionMenu.getVisibility() == View.GONE) {
-                        instance.open(button);
-                    } else {
-                        instance.close(button);
-                    }
+                if (instance.actionMenu.getVisibility() == View.GONE) {
+                    instance.open();
+                } else {
+                    instance.close();
                 }
             }
         });
@@ -80,74 +79,78 @@ public class FloatingActionMenuAnimator {
     }
 
 
-    private void open(final ViewHolder button){
-        actionMenu.setVisibility(View.VISIBLE);
-        ObjectAnimator animation = ObjectAnimator.ofFloat(button.btn, "translationY", -200f);
-        animation.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
+    private void open(){
+        for (final ViewHolder button:buttons) {
+            actionMenu.setVisibility(View.VISIBLE);
+            ObjectAnimator animation = ObjectAnimator.ofFloat(button.btn, "translationY", -ANIMATION_DISTANCE * button.index);
+            animation.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
 
-            }
+                }
 
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                button.card.setVisibility(View.VISIBLE);
-            }
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    button.card.setVisibility(View.VISIBLE);
+                }
 
-            @Override
-            public void onAnimationCancel(Animator animation) {
+                @Override
+                public void onAnimationCancel(Animator animation) {
 
-            }
+                }
 
-            @Override
-            public void onAnimationRepeat(Animator animation) {
+                @Override
+                public void onAnimationRepeat(Animator animation) {
 
-            }
-        });
-        animation.setDuration(ANIMATION_DURATION);
-        animation.start();
+                }
+            });
+            animation.setDuration(ANIMATION_DURATION);
+            animation.start();
 
-
+        }
 
 
     }
 
-    private void close(final ViewHolder button){
-        button.card.setVisibility(View.GONE);
-        ObjectAnimator animation = ObjectAnimator.ofFloat(button.btn, "translationY", 1f);
-        animation.setDuration(ANIMATION_DURATION);
-        animation.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
+    private void close(){
+        for (final ViewHolder button:buttons) {
+            button.card.setVisibility(View.GONE);
+            ObjectAnimator animation = ObjectAnimator.ofFloat(button.btn, "translationY", 1);
+            animation.setDuration(ANIMATION_DURATION);
+            animation.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
 
-            }
+                }
 
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                actionMenu.setVisibility(View.GONE);
-            }
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    actionMenu.setVisibility(View.GONE);
+                }
 
-            @Override
-            public void onAnimationCancel(Animator animation) {
+                @Override
+                public void onAnimationCancel(Animator animation) {
 
-            }
+                }
 
-            @Override
-            public void onAnimationRepeat(Animator animation) {
+                @Override
+                public void onAnimationRepeat(Animator animation) {
 
-            }
-        });
-        animation.start();
+                }
+            });
+            animation.start();
+        }
     }
 
 
     static private class ViewHolder{
+        int index;
         FloatingActionButton btn;
         CardView card;
         TextView text;
 
-        public ViewHolder(){
-
+        public ViewHolder(int index){
+            this.index = index;
         }
 
     }
