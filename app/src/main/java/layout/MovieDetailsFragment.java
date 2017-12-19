@@ -6,20 +6,28 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aguilarcreations.tvlog.Episode;
 import com.example.aguilarcreations.tvlog.FloatingActionMenuAnimator;
+import com.example.aguilarcreations.tvlog.ImageHelper;
 import com.example.aguilarcreations.tvlog.Item;
 import com.example.aguilarcreations.tvlog.MainActivity;
 import com.example.aguilarcreations.tvlog.Movie;
@@ -72,18 +80,13 @@ public class MovieDetailsFragment extends Fragment {
         fragment = this;
         movieViewModel = activity.movieViewModel;
         if (movie != null) {
-            Log.d("Alejandro", "Hit movie!");
             movieViewModel.setMovie(movie);
             movieViewModel.loadMovieDetails(Integer.toString(movie.getTrakt_id()));
         }else if(episode != null){
-            Log.d("Alejandro", "Hit episode!");
             movieViewModel.setEpisode(episode);
-            Log.d("Alejandro", "episode: " + episode.toString());
             movieViewModel.loadEpisodeDetails(Integer.toString(episode.getShow().getTrakt_id()),
                     Integer.toString(episode.getSeason()),
                     Integer.toString(episode.getEpi_number()));
-        }else{
-            Log.d("Alejandro", "NO BANANAS");
         }
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(MovieViewModel.DETAILS_LOADED);
@@ -100,17 +103,18 @@ public class MovieDetailsFragment extends Fragment {
         Log.d("Lifecycle", "MovieDetailsFragment onCreateView");
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_movie_details, container, false);
-        setupActionBar();
+        setupActionBar(v);
         setupActionMenu(v);
 
-        //setupSpinner(v);
+        setupCoverImage(v);
+
 
 
         return v;
     }
 
 
-    private void setupActionBar(){
+    private void setupActionBar(View v){
         ActionBar actionBar = activity.getActionBar();
         if(movie != null) {
             actionBar.setTitle(movie.getTitle());
@@ -118,7 +122,7 @@ public class MovieDetailsFragment extends Fragment {
             actionBar.setTitle(episode.getTitle());
         }
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+
     }
 
     private void setupActionMenu(View v){
@@ -147,6 +151,22 @@ public class MovieDetailsFragment extends Fragment {
             }
         });
 
+    }
+
+
+    private void setupCoverImage(View v){
+        ImageView cover = v.findViewById(R.id.moviedetails_main_image);
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int w = size.x;
+        int h = (int) (((float)size.x/1920f)*1080f); //get height based on this ratio
+        cover.getLayoutParams().width = w;
+        cover.getLayoutParams().height = h;
+
+        Bitmap bitmap = ImageHelper.decodeSampledBitmapFromResource(v.getResources(),
+                R.mipmap.minions_backdrop, w, h);
+        cover.setImageBitmap(bitmap);
     }
 
     @Override
@@ -191,8 +211,5 @@ public class MovieDetailsFragment extends Fragment {
             }
         }
     };
-
-
-
 
 }

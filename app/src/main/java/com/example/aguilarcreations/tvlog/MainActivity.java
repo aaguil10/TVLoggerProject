@@ -1,6 +1,7 @@
 package com.example.aguilarcreations.tvlog;
 
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -9,6 +10,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.view.View;
+import android.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -133,14 +136,22 @@ public class MainActivity extends Activity implements
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         WatchlistFragment fragment = new WatchlistFragment();
         fragmentTransaction.add(R.id.content, fragment);
         fragmentTransaction.commit();
 
+//        Toolbar myToolbar = (Toolbar) this.findViewById(R.id.toolbar);
+//        myToolbar.setTitle("Tacos");
+//        setActionBar(myToolbar);
+        //ActionBar actionBar = v.getActionBar();
+
 
     }
+
+
 
 
     @Override
