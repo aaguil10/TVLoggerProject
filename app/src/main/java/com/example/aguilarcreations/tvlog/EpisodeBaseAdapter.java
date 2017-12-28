@@ -80,10 +80,16 @@ public class EpisodeBaseAdapter extends BaseAdapter {
         final Episode epi = data.get(i);
         String entry = String.format("%s. %s", epi.getEpi_number(), episode.getTitle());
         episodeHolder.title.setText(entry);
-        episodeHolder.epi_details_button.setOnClickListener(new View.OnClickListener() {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openEpisodeDetails(epi);
+            }
+        });
+        episodeHolder.epi_details_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //openEpisodeDetails(epi);
             }
         });
 

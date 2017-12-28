@@ -122,34 +122,57 @@ public class MovieDetailsFragment extends Fragment {
             actionBar.setTitle(episode.getTitle());
         }
         actionBar.setDisplayHomeAsUpEnabled(true);
-
+        actionBar.setHomeButtonEnabled(true);
     }
 
     private void setupActionMenu(View v){
-        FloatingActionMenuAnimator.BtnData[] btnData = new FloatingActionMenuAnimator.BtnData[3];
-        btnData[0] = new FloatingActionMenuAnimator.BtnData("Stop Tracking",R.drawable.ic_remove_black_24dp);
-        btnData[1] = new FloatingActionMenuAnimator.BtnData("Add to Finshed",R.drawable.ic_playlist_add_check_black_24dp);
-        btnData[2] = new FloatingActionMenuAnimator.BtnData("Add to Watchlist",R.drawable.ic_watchlist_black_24dp);
-        FloatingActionMenuAnimator floatingActionMenuAnimator = FloatingActionMenuAnimator.build(v, btnData);
-        floatingActionMenuAnimator.getActionButton(0).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                movieViewModel.removeWatchlist();
-                movieViewModel.removeFinshed();
-            }
-        });
-        floatingActionMenuAnimator.getActionButton(1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                movieViewModel.addToFinshed();
-            }
-        });
-        floatingActionMenuAnimator.getActionButton(2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                movieViewModel.addToWatchlist();
-            }
-        });
+        if(movie != null) {
+            Log.d("Alejandro", "In movie...");
+            FloatingActionMenuAnimator.BtnData[] btnData = new FloatingActionMenuAnimator.BtnData[3];
+            btnData[0] = new FloatingActionMenuAnimator.BtnData("Stop Tracking", R.drawable.ic_remove_black_24dp);
+            btnData[1] = new FloatingActionMenuAnimator.BtnData("Add to Finshed", R.drawable.ic_playlist_add_check_black_24dp);
+            btnData[2] = new FloatingActionMenuAnimator.BtnData("Add to Watchlist", R.drawable.ic_watchlist_black_24dp);
+            FloatingActionMenuAnimator floatingActionMenuAnimator = FloatingActionMenuAnimator.build(v, btnData);
+            floatingActionMenuAnimator.getActionButton(0).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    movieViewModel.removeWatchlist();
+                    movieViewModel.removeFinshed();
+                }
+            });
+            floatingActionMenuAnimator.getActionButton(1).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    movieViewModel.addToFinshed();
+                }
+            });
+            floatingActionMenuAnimator.getActionButton(2).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    movieViewModel.addToWatchlist();
+                }
+            });
+        }else if(episode != null){
+            Log.d("Alejandro", "In episodes...");
+            FloatingActionMenuAnimator.BtnData[] btnData = new FloatingActionMenuAnimator.BtnData[2];
+            btnData[0] = new FloatingActionMenuAnimator.BtnData("Mark Unwatched", R.drawable.ic_add_circle_black_24dp);
+            btnData[1] = new FloatingActionMenuAnimator.BtnData("---Mark Finished", R.drawable.ic_check_circle_black_24dp);
+            FloatingActionMenuAnimator floatingActionMenuAnimator = FloatingActionMenuAnimator.build(v, btnData);
+            floatingActionMenuAnimator.getActionButton(0).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    movieViewModel.markUnwatched(episode);
+                }
+            });
+            floatingActionMenuAnimator.getActionButton(1).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    movieViewModel.addToFinshed();
+                }
+            });
+        }else {
+            Log.d("Alejandro", "Nada..");
+        }
 
     }
 

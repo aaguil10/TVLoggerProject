@@ -1,6 +1,8 @@
 package com.example.aguilarcreations.tvlog;
 
+import android.os.AsyncTask;
 import android.os.Handler;
+import android.util.Log;
 
 /**
  * Created by Work on 10/16/17.
@@ -21,6 +23,7 @@ public class TraktExpert {
     private static String get_movie_details_function = "details/getMovieDetails/";
     private static String get_episode_details_function = "details/getEpisodeDetails/";
     private static String get_episodes_function = "details/getEpisodes/";
+    private static String get_finished_episodes_function = "details/getFinishedEpisodes/";
 
 
 
@@ -50,6 +53,19 @@ public class TraktExpert {
         serverCall.execute(apiGateWayUrl+add_watchlist_function, callback, generateTransportString(show));
     }
 
+    public static void markFinished(Episode episode, Handler.Callback callback){
+        ServerCall serverCall = new ServerCall();
+        Log.d("Alejandro", "TraktExp.markFinished called: " + apiGateWayUrl+add_history_function);
+        serverCall.execute(apiGateWayUrl+add_history_function, callback, "Fuck");
+        Log.d("Alejandro", "Tacos");
+    }
+
+    public static void markUnwatched(Episode episode, Handler.Callback callback){
+        ServerCall serverCall = new ServerCall();
+        //serverCall.execute(apiGateWayUrl+add_watchlist_function, callback, generateTransportString(episode));
+    }
+
+
     public static void removeWatchlist(Movie movie, Handler.Callback callback){
         ServerCall serverCall = new ServerCall();
         serverCall.execute(apiGateWayUrl+remove_watchlist_function, callback, generateTransportString(movie));
@@ -70,9 +86,9 @@ public class TraktExpert {
         serverCall.execute(apiGateWayUrl+add_history_function, callback, generateTransportString(movie));
     }
 
-    public static void addToFinished(Show show, Handler.Callback callback){
+    public static void addToFinished(Episode episode, Handler.Callback callback){
         ServerCall serverCall = new ServerCall();
-        serverCall.execute(apiGateWayUrl+add_history_function, callback, generateTransportString(show));
+        serverCall.execute(apiGateWayUrl+add_history_function, callback, generateTransportString(episode));
     }
 
     public static void removedFromFinished(Movie movie, Handler.Callback callback){
@@ -103,6 +119,11 @@ public class TraktExpert {
     }
 
 
+    public static void getFinishedEpisodes(String traktid, Handler.Callback callback){
+        ServerCall serverCall = new ServerCall();
+        serverCall.execute(apiGateWayUrl+get_finished_episodes_function+traktid, callback);
+    }
+
     private static String generateTransportString(Movie movie){
         String s = "{\"movies\": [{\"ids\": {\"imdb\": \"" + movie.getImdb_id() +"\"}}]}";
         return s;
@@ -110,6 +131,11 @@ public class TraktExpert {
 
     private static String generateTransportString(Show show){
         String s = "{\"shows\": [{\"ids\": {\"imdb\": \"" + show.getImdb_id() +"\"}}]}";
+        return s;
+    }
+
+    private static String generateTransportString(Episode episode){
+        String s = "{\"episodes\": [{\"ids\": {\"imdb\": \"" + episode.getImdb_id() +"\"}}]}";
         return s;
     }
 

@@ -80,7 +80,9 @@ public class MovieViewModel {
 
     public void addToWatchlist(){
         Log.d("Alejandro", "Calling addToWatchlist");
-        TraktExpert.addToWatchlist(movie, addWatchlistCallback);
+        if(movie != null) {
+            TraktExpert.addToWatchlist(movie, addWatchlistCallback);
+        }
     }
 
     public void removeWatchlist(){
@@ -90,7 +92,15 @@ public class MovieViewModel {
 
     public void addToFinshed(){
         Log.d("Alejandro", "Calling addToFinshed");
-        TraktExpert.addToFinished(movie, addFinishedCallback);
+        if(movie != null) {
+            Log.d("Alejandro", "Calling in Movie");
+            TraktExpert.addToFinished(movie, addFinishedCallback);
+        }else if(episode != null){
+            Log.d("Alejandro", "Calling in Episode");
+            TraktExpert.addToFinished(episode, addFinishedCallback);
+        }else {
+            Log.d("Alejandro", "No Mojo!");
+        }
     }
 
     public void removeFinshed(){
@@ -98,9 +108,14 @@ public class MovieViewModel {
         TraktExpert.removedFromFinished(movie, removedFinishedCallback);
     }
 
-    public void getSeasons(){
-        Log.d("Alejandro", "Calling getSeasons");
-        TraktExpert.getSeasons(movie.getImdb_id(), getSeasonsCallback);
+    public void markFinished(Episode episode){
+        Log.d("Alejandro", "Calling markFinished");
+        TraktExpert.addToFinished(episode, markFinishedCallback);
+    }
+
+    public void markUnwatched(Episode episode){
+        Log.d("Alejandro", "Calling markUnwatched");
+        TraktExpert.markUnwatched(episode, markUnwatchedCallback);
     }
 
 
@@ -158,23 +173,22 @@ public class MovieViewModel {
         }
     };
 
-    private Handler.Callback getSeasonsCallback = new Handler.Callback() {
+    private Handler.Callback markFinishedCallback = new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
             String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "getSeasonsCallback msg: " + msg);
+            Log.d("Alejandro", "markFinshedCallback msg: " + msg);
 
-            try {
+            return false;
+        }
+    };
 
+    private Handler.Callback markUnwatchedCallback = new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            String msg = message.getData().getString(ServerCall.GET_MESSAGE);
+            Log.d("Alejandro", "markUnwatchedCallback msg: " + msg);
 
-            }catch (Exception e){
-                e.printStackTrace();
-                Log.e("Alejandro", "Error getSeasonsCallback e: " + e.toString());
-            }
-
-            Intent intent = new Intent();
-            intent.setAction(GOT_SEASONS);
-            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             return false;
         }
     };
@@ -183,7 +197,7 @@ public class MovieViewModel {
         @Override
         public boolean handleMessage(Message message) {
             String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "getEpisodesCallback msg: " + msg);
+            Log.d("Alejandro", "-------getEpisodesCallback msg: " + msg);
 
             return false;
         }

@@ -37,6 +37,7 @@ public class ServerCall extends AsyncTask {
     protected String doInBackground(Object[] objects) {
         String connection_url = "";
         HashMap<String, String> postDataParams = new HashMap<>();
+        Log.d("Alejandro", "objects.length: " + objects.length);
         if(objects.length > 0){
             connection_url = (String)objects[0];
         }else{
@@ -55,14 +56,14 @@ public class ServerCall extends AsyncTask {
         try {
             URL url = new URL(connection_url);
             urlConnection= (HttpURLConnection) url.openConnection();
+            urlConnection.setConnectTimeout(TIMEOUT_VALUE);
+            urlConnection.setReadTimeout(TIMEOUT_VALUE);
 
             if(doPost) {
                 Log.d("Alejandro", "In do post");
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setDoInput(true);
                 urlConnection.setDoOutput(true);
-                urlConnection.setConnectTimeout(TIMEOUT_VALUE);
-                urlConnection.setReadTimeout(TIMEOUT_VALUE);
 
                 OutputStream os = urlConnection.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));

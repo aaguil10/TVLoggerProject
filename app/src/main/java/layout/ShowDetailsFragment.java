@@ -142,6 +142,18 @@ public class ShowDetailsFragment extends Fragment {
         btnData[0] = new FloatingActionMenuAnimator.BtnData("Stop Tracking",R.drawable.ic_remove_black_24dp);
         btnData[1] = new FloatingActionMenuAnimator.BtnData("Start Tracking",R.drawable.ic_watchlist_black_24dp);
         FloatingActionMenuAnimator floatingActionMenuAnimator = FloatingActionMenuAnimator.build(v, btnData);
+        floatingActionMenuAnimator.getActionButton(0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showViewModel.stopTracking();
+            }
+        });
+        floatingActionMenuAnimator.getActionButton(1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showViewModel.startTracking();
+            }
+        });
     }
 
     @Override
@@ -201,6 +213,7 @@ public class ShowDetailsFragment extends Fragment {
                     EpisodeBaseAdapter episodeBaseAdapter;
                     episodeBaseAdapter = new EpisodeBaseAdapter(getActivity(), list, getResources());
                     episode_listview.setAdapter(episodeBaseAdapter);
+                    showViewModel.getFinishedEpisodes();
                 }
             }
         }

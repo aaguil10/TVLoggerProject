@@ -46,6 +46,50 @@ public class ShowViewModel {
         TraktExpert.getMovieDetails(id, false, getDetailsCallback);
     }
 
+    public void getFinishedEpisodes(){
+        TraktExpert.getFinishedEpisodes(Integer.toString(show.getTrakt_id()), getFinishedEpisodesback);
+    }
+
+    public void stopTracking(){
+        TraktExpert.removeWatchlist(show, dummycallback);
+    }
+
+    public void startTracking(){
+        TraktExpert.addToWatchlist(show, dummycallback);
+    }
+
+
+    private Handler.Callback dummycallback = new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            String msg = message.getData().getString(ServerCall.GET_MESSAGE);
+            Log.d("Alejandro", "dummycallback msg: " + msg);
+            return false;
+        }
+    };
+
+
+
+    private Handler.Callback getFinishedEpisodesback = new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            String msg = message.getData().getString(ServerCall.GET_MESSAGE);
+            Log.d("Alejandro", "getFinishedEpisodesback msg: " + msg);
+//            try {
+//                JSONArray j = new JSONArray(msg);
+//                show.addDetails(j);
+//            }catch (JSONException e){
+//                e.printStackTrace();
+//                Log.e(TAG, "Error getDetailsCallback: " + e.toString());
+//            }
+//
+//            Intent intent = new Intent();
+//            intent.setAction(DETAILS_LOADED);
+//            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+            return false;
+        }
+    };
+
     private Handler.Callback getDetailsCallback = new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
