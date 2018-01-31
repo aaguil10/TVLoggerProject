@@ -14,6 +14,7 @@ public class Episode extends Item {
     private Show show;
     private int season;
     private int epi_number;
+    private boolean completed;
 
 
     public Episode(){
@@ -70,6 +71,14 @@ public class Episode extends Item {
 
     public int getEpi_number(){
         return epi_number;
+    }
+
+    public void setCompleted(boolean completed){
+        this.completed = completed;
+    }
+
+    public boolean getCompleted(){
+        return completed;
     }
 
     public String toString(){

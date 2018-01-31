@@ -41,6 +41,7 @@ public class ShowDetailsFragment extends Fragment {
     ShowDetailsFragment fragment;
     ShowViewModel showViewModel;
     Show show;
+    EpisodeBaseAdapter episodeBaseAdapter;
 
     public ShowDetailsFragment() {
         // Required empty public constructor
@@ -77,6 +78,7 @@ public class ShowDetailsFragment extends Fragment {
         intentFilter.addAction(MovieViewModel.REMOVED_WATCHLIST);
         intentFilter.addAction(MovieViewModel.REMOVED_FINISHED);
         intentFilter.addAction(MovieViewModel.GOT_SEASONS);
+        intentFilter.addAction(ShowViewModel.GOT_EPISODE_DATA);
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(showReceiver, intentFilter);
 
     }
@@ -172,7 +174,7 @@ public class ShowDetailsFragment extends Fragment {
     BroadcastReceiver showReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e("Alejandro", "action: " + intent.getAction());
+            Log.e("Alejandro", "-----action: " + intent.getAction());
             if(MovieViewModel.DETAILS_LOADED.equals(intent.getAction())){
                 if(fragment.getView() != null) {
                     TextView title_tv = fragment.getView().findViewById(R.id.moviedetails_description);
@@ -210,11 +212,19 @@ public class ShowDetailsFragment extends Fragment {
                         list.add(episode);
                     }
                     ListView episode_listview = fragment.getView().findViewById(R.id.episode_listview);
-                    EpisodeBaseAdapter episodeBaseAdapter;
                     episodeBaseAdapter = new EpisodeBaseAdapter(getActivity(), list, getResources());
                     episode_listview.setAdapter(episodeBaseAdapter);
-                    showViewModel.getFinishedEpisodes();
+                    showViewModel.getFinishedEpisodes(show.getTrakt_id());
                 }
+            } else if(ShowViewModel.GOT_EPISODE_DATA.equals(intent.getAction())){
+                Toast.makeText(context, "Got Episode Data!", Toast.LENGTH_LONG).show();
+                ArrayList<Episode> list = new ArrayList<>();
+                for (Episode episode : showViewModel.getEpisodes(1)) {
+                    list.add(episode);
+                }
+                ListView episode_listview = fragment.getView().findViewById(R.id.episode_listview);
+                episodeBaseAdapter = new EpisodeBaseAdapter(getActivity(), list, getResources());
+                episode_listview.setAdapter(episodeBaseAdapter);
             }
         }
     };

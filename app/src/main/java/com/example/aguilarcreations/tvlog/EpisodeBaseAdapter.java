@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,7 +68,7 @@ public class EpisodeBaseAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
-        Episode episode = data.get(i);
+        final Episode episode = data.get(i);
         EpisodeHolder episodeHolder;
 
         if (view == null) {
@@ -89,9 +93,14 @@ public class EpisodeBaseAdapter extends BaseAdapter {
         episodeHolder.epi_details_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //openEpisodeDetails(epi);
+                TraktExpert.addToFinished(episode, addToFinishedCallback);
             }
         });
+        Log.d("Alejandro", episode.getEpi_number()+ ": "+ episode.getCompleted());
+        if(episode.getCompleted()){
+            episodeHolder.epi_details_button.setImageDrawable(
+                    view.getResources().getDrawable(R.drawable.ic_check_circle_black_24dp) );
+        }
 
         return view;
     }
@@ -99,5 +108,14 @@ public class EpisodeBaseAdapter extends BaseAdapter {
     private void openEpisodeDetails(Episode episode){
         activity.onEpisodeSelected(episode);
     }
+
+    private Handler.Callback addToFinishedCallback = new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            String msg = message.getData().getString(ServerCall.GET_MESSAGE);
+            Log.d("Alejandro", "addToFinishedCallback msg: " + msg);
+            return false;
+        }
+    };
 
 }

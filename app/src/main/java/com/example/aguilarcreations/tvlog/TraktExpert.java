@@ -15,6 +15,7 @@ public class TraktExpert {
     private static String apiGateWayUrl = "http://ec2-34-234-70-85.compute-1.amazonaws.com:8080/";
     private static String popular_movies_function = "browse/getPopularMovies";
     private static String get_watchlist_function = "watchlist/getWatchList";
+    private static String get_current_shows_function = "watchlist/getCurrentShows";
     private static String add_watchlist_function = "watchlist/addToWatchList";
     private static String remove_watchlist_function = "watchlist/removeFromWatchList";
     private static String get_watched_function = "history/getWatched";
@@ -41,6 +42,11 @@ public class TraktExpert {
 
         ServerCall serverCall = new ServerCall();
         serverCall.execute(apiGateWayUrl+get_watchlist_function, callback);
+    }
+
+    public static void getCurrentShows(Handler.Callback callback){
+        ServerCall serverCall = new ServerCall();
+        serverCall.execute(apiGateWayUrl+get_current_shows_function, callback);
     }
 
     public static void addToWatchlist(Movie movie, Handler.Callback callback){

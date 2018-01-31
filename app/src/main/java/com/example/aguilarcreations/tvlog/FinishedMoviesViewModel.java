@@ -65,7 +65,7 @@ public class FinishedMoviesViewModel {
                             if(fragment.isMovieMode()) finishedrMovies.add(movie);
                         }else if(j.has("show")){
                             Show show = Show.createShowFromJson(j.getJSONObject("show"), Item.FINISHED);
-                            if(!fragment.isMovieMode())finishedrMovies.add(show);
+                            if(!fragment.isMovieMode() && !isInList(show))finishedrMovies.add(show);
                         }
                     }catch (JSONException e){
                         e.printStackTrace();
@@ -84,6 +84,16 @@ public class FinishedMoviesViewModel {
             return false;
         }
     };
+
+
+    public boolean isInList(Show show){
+        for (Item item :finishedrMovies){
+            if(item.getTrakt_id() == show.getTrakt_id()){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public ArrayList<Item> getFinishedrMovies(){
         if(finishedrMovies == null){

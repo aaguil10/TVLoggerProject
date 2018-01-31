@@ -21,6 +21,7 @@ public class ShowViewModel {
     private static ShowViewModel instance = null;
     public static final String DETAILS_LOADED = "movie_details_loaded";
     public static final String GOT_SEASONS = "got_seasons";
+    public static final String GOT_EPISODE_DATA = "got_episode_data";
     String TAG = ShowViewModel.class.getName();
 
     Show show = null;
@@ -42,53 +43,11 @@ public class ShowViewModel {
         this.show = show;
     }
 
+
+
     public void loadShowDetails(String id){
         TraktExpert.getMovieDetails(id, false, getDetailsCallback);
     }
-
-    public void getFinishedEpisodes(){
-        TraktExpert.getFinishedEpisodes(Integer.toString(show.getTrakt_id()), getFinishedEpisodesback);
-    }
-
-    public void stopTracking(){
-        TraktExpert.removeWatchlist(show, dummycallback);
-    }
-
-    public void startTracking(){
-        TraktExpert.addToWatchlist(show, dummycallback);
-    }
-
-
-    private Handler.Callback dummycallback = new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message message) {
-            String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "dummycallback msg: " + msg);
-            return false;
-        }
-    };
-
-
-
-    private Handler.Callback getFinishedEpisodesback = new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message message) {
-            String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "getFinishedEpisodesback msg: " + msg);
-//            try {
-//                JSONArray j = new JSONArray(msg);
-//                show.addDetails(j);
-//            }catch (JSONException e){
-//                e.printStackTrace();
-//                Log.e(TAG, "Error getDetailsCallback: " + e.toString());
-//            }
-//
-//            Intent intent = new Intent();
-//            intent.setAction(DETAILS_LOADED);
-//            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-            return false;
-        }
-    };
 
     private Handler.Callback getDetailsCallback = new Handler.Callback() {
         @Override
@@ -109,6 +68,50 @@ public class ShowViewModel {
         }
     };
 
+
+
+
+    public void getFinishedEpisodes(int showid){
+        String id = Integer.toString(showid);
+        TraktExpert.getFinishedEpisodes(id, getFinishedEpisodesback);
+    }
+
+    private Handler.Callback getFinishedEpisodesback = new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            String msg = message.getData().getString(ServerCall.GET_MESSAGE);
+            try {
+                show.addShowData(new JSONObject(msg));
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+
+            Intent intent = new Intent();
+            intent.setAction(GOT_EPISODE_DATA);
+            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+            return false;
+        }
+    };
+
+    public void stopTracking(){
+        TraktExpert.removeWatchlist(show, dummycallback);
+    }
+
+    public void startTracking(){
+        TraktExpert.addToWatchlist(show, dummycallback);
+    }
+
+
+    private Handler.Callback dummycallback = new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            String msg = message.getData().getString(ServerCall.GET_MESSAGE);
+            Log.d("Alejandro", "dummycallback msg: " + msg);
+            return false;
+        }
+    };
+
+
     public void getSeasons(){
         TraktExpert.getSeasons(show.getImdb_id(), getSeasonsCallback);
     }
@@ -120,8 +123,8 @@ public class ShowViewModel {
             String msg = message.getData().getString(ServerCall.GET_MESSAGE);
 
             try {
-                JSONArray seasonArr = new JSONArray(msg);
-                show.addDetails(seasonArr);
+                JSONArray jsonArray = new JSONArray(msg);
+                show.addDetails(jsonArray);
 
             }catch (Exception e){
                 e.printStackTrace();

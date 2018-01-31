@@ -43,8 +43,41 @@ public class WatchlistViewModel {
 
 
     public void loadWatchlist(){
+
         TraktExpert.getWatchlist(getWatchlistCallback);
+        TraktExpert.getCurrentShows(getCurrentShowsCallback);
     }
+
+    private Handler.Callback getCurrentShowsCallback = new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            String msg = message.getData().getString(ServerCall.GET_MESSAGE);
+            Log.d("Alejandro", "getCurrentShowsCallback: " + msg);
+            try {
+                if(watchlist == null) {
+                    watchlist = new ArrayList<>();
+                }
+                JSONArray jsonArray = new JSONArray(msg);
+                for (int i = 0; i < jsonArray.length(); i++){
+                    JSONObject j = jsonArray.getJSONObject(i);
+                    if(j.has("show")){
+                        Show show = Show.createShowFromJson(j.getJSONObject("show"), Item.WATCHLIST);
+                        if(!fragment.isMovieMode()) watchlist.add(show);
+                    }
+                }
+            }catch (JSONException e){
+                e.printStackTrace();
+                Log.e("Alejandro", "Error getWatchlistCallback: " + e.toString());
+            }
+
+            Intent intent = new Intent();
+            intent.setAction("watchlist_updated");
+            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+
+
+            return false;
+        }
+    };
 
     private Handler.Callback getWatchlistCallback = new Handler.Callback() {
         @Override
