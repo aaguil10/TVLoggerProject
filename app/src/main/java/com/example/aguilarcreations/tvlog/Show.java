@@ -167,7 +167,10 @@ public class Show extends Item{
         return tvrage;
     }
 
-    public ArrayList<Episode> getEpisodes(int season){
+    public ArrayList<Episode> getEpisodes(int season) throws IndexOutOfBoundsException{
+        if(season >= seasons.size()){
+            throw new IndexOutOfBoundsException();
+        }
         return seasons.get(season);
     }
 

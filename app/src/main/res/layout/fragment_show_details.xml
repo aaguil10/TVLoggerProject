@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/maincontent"
@@ -10,61 +10,61 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/moviedetails_main_image"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="?BackgoundColor" />
+            <ImageView
+                android:id="@+id/moviedetails_main_image"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="?BackgoundColor" />
 
-        <TextView
-            android:id="@+id/moviedetails_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Show Description" />
+            <TextView
+                android:id="@+id/moviedetails_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Show Description" />
 
 
-        <Spinner
-            android:id="@+id/season_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/PrimaryColor"
-            android:textAlignment="center" />
+            <Spinner
+                android:id="@+id/season_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/PrimaryColor"
+                android:textAlignment="center" />
 
-        <ListView
-            android:id="@+id/episode_listview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#fff" />
-    </LinearLayout>
+            <ListView
+                android:id="@+id/episode_listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#fff" />
+        </LinearLayout>
 
         <include
             android:id="@+id/action_button_menu"
-            android:visibility="gone"
-            layout="@layout/floating_action_button_menu"/>
+            layout="@layout/floating_action_button_menu"
+            android:visibility="gone" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/action_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_add_black_24dp"
-        app:backgroundTint="@color/PrimaryColor"
-        android:layout_marginBottom="25dp"
-        android:layout_marginRight="25dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:fabSize="normal" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/action_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:layout_marginRight="25dp"
+            android:src="@drawable/ic_add_black_24dp"
+            app:backgroundTint="@color/PrimaryColor"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 
-</FrameLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

@@ -75,6 +75,7 @@ public class MainActivity extends Activity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d("Lifecycle", "MainActivity onOptionsItemSelected");
+        Log.d("Alejandro", "onOptionsItemSelected menu item: " + item);
 
         switch (item.getItemId()) {
             case android.R.id.home:

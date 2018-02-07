@@ -142,7 +142,7 @@ public class ShowViewModel {
         return show;
     }
 
-    public ArrayList<Episode> getEpisodes(int season){
+    public ArrayList<Episode> getEpisodes(int season) throws IndexOutOfBoundsException{
         return show.getEpisodes(season);
     }
 

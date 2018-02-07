@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Display;
@@ -47,6 +48,7 @@ public class MovieDetailsFragment extends Fragment {
     MovieViewModel movieViewModel;
     Movie movie;
     Episode episode;
+    SwipeRefreshLayout mySwipeRefreshLayout;
 
     public MovieDetailsFragment() {
         // Required empty public constructor
@@ -90,6 +92,7 @@ public class MovieDetailsFragment extends Fragment {
         }
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(MovieViewModel.DETAILS_LOADED);
+        intentFilter.addAction(MovieViewModel.EPISODE_LOADED);
         intentFilter.addAction(MovieViewModel.ADDED_WATCHLIST);
         intentFilter.addAction(MovieViewModel.ADDED_FINISHED);
         intentFilter.addAction(MovieViewModel.REMOVED_WATCHLIST);
@@ -105,10 +108,25 @@ public class MovieDetailsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_movie_details, container, false);
         setupActionBar(v);
         setupActionMenu(v);
-
         setupCoverImage(v);
 
+        mySwipeRefreshLayout = v.findViewById(R.id.swiperefresh);
+        mySwipeRefreshLayout.setRefreshing(true);
 
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        if (movie != null) {
+                            movieViewModel.loadMovieDetails(Integer.toString(movie.getTrakt_id()));
+                        }else if(episode != null){
+                            movieViewModel.loadEpisodeDetails(Integer.toString(episode.getShow().getTrakt_id()),
+                                    Integer.toString(episode.getSeason()),
+                                    Integer.toString(episode.getEpi_number()));
+                        }
+                    }
+                }
+        );
 
         return v;
     }
@@ -116,13 +134,15 @@ public class MovieDetailsFragment extends Fragment {
 
     private void setupActionBar(View v){
         ActionBar actionBar = activity.getActionBar();
-        if(movie != null) {
-            actionBar.setTitle(movie.getTitle());
-        }else if(episode != null){
-            actionBar.setTitle(episode.getTitle());
+        if(actionBar != null) {
+            if (movie != null) {
+                actionBar.setTitle(movie.getTitle());
+            } else if (episode != null) {
+                actionBar.setTitle(episode.getTitle());
+            }
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
         }
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
     }
 
     private void setupActionMenu(View v){
@@ -208,6 +228,7 @@ public class MovieDetailsFragment extends Fragment {
                     TextView title_tv = fragment.getView().findViewById(R.id.moviedetails_description);
                     title_tv.setText(movie.getOverview());
                 }
+                mySwipeRefreshLayout.setRefreshing(false);
             }else if(MovieViewModel.ADDED_WATCHLIST.equals(intent.getAction())){
                 Toast.makeText(context, "Added to Watchlist", Toast.LENGTH_LONG).show();
             }else if(MovieViewModel.ADDED_FINISHED.equals(intent.getAction())){
@@ -223,7 +244,18 @@ public class MovieDetailsFragment extends Fragment {
                     movie.setState(Item.BROWSE);
                 }
             }else if(MovieViewModel.GOT_SEASONS.equals(intent.getAction())){
-                Toast.makeText(context, "Got Seasons", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "--Got Seasons", Toast.LENGTH_LONG).show();
+                mySwipeRefreshLayout.setRefreshing(false);
+            }else if(MovieViewModel.EPISODE_LOADED.equals(intent.getAction())){
+                Toast.makeText(context, "Episode Loaded!", Toast.LENGTH_LONG).show();
+                mySwipeRefreshLayout.setRefreshing(false);
+                if(fragment.getView() != null) {
+                    ActionBar actionBar = activity.getActionBar();
+                    actionBar.setTitle(episode.getTitle());
+                    TextView dis_tv = fragment.getView().findViewById(R.id.moviedetails_description);
+                    String dis = "Season " + episode.getSeason() + " Episode: " + episode.getEpi_number();
+                    dis_tv.setText(dis);
+                }
 
             }
         }

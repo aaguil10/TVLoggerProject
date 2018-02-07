@@ -17,6 +17,7 @@ import org.json.JSONObject;
 public class MovieViewModel {
     private static MovieViewModel instance = null;
     public static final String DETAILS_LOADED = "movie_details_loaded";
+    public static final String EPISODE_LOADED = "episode_details_loaded";
     public static final String ADDED_WATCHLIST = "added_watchlist";
     public static final String ADDED_FINISHED = "added_finished";
     public static final String REMOVED_WATCHLIST = "removed_watchlist";
@@ -50,11 +51,6 @@ public class MovieViewModel {
         TraktExpert.getMovieDetails(id, false, getDetailsCallback);
     }
 
-    public void loadEpisodeDetails(String showid, String season_num, String episode_num){
-        TraktExpert.getEpisodeDetails(showid, season_num, episode_num,getEpisodesDetailsCallback);
-    }
-
-
     private Handler.Callback getDetailsCallback = new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -69,6 +65,29 @@ public class MovieViewModel {
             Intent intent = new Intent();
             intent.setAction(DETAILS_LOADED);
             LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+            return false;
+        }
+    };
+
+    public void loadEpisodeDetails(String showid, String season_num, String episode_num){
+        TraktExpert.getEpisodeDetails(showid, season_num, episode_num,getEpisodesDetailsCallback);
+    }
+
+    private Handler.Callback getEpisodesDetailsCallback = new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            String msg = message.getData().getString(ServerCall.GET_MESSAGE);
+            try {
+                JSONObject j = new JSONObject(msg);
+                episode.createEpisodeFromJson(j, "yes");
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+
+            Intent intent = new Intent();
+            intent.setAction(EPISODE_LOADED);
+            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+
             return false;
         }
     };
@@ -159,14 +178,6 @@ public class MovieViewModel {
     };
 
     private Handler.Callback markUnwatchedCallback = new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message message) {
-            String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            return false;
-        }
-    };
-
-    private Handler.Callback getEpisodesDetailsCallback = new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
             String msg = message.getData().getString(ServerCall.GET_MESSAGE);

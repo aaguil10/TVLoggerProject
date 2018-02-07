@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.example.aguilarcreations.tvlog.Show;
 import com.example.aguilarcreations.tvlog.ShowViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Use the {@link ShowDetailsFragment#newInstance} factory method to
@@ -42,6 +44,7 @@ public class ShowDetailsFragment extends Fragment {
     ShowViewModel showViewModel;
     Show show;
     EpisodeBaseAdapter episodeBaseAdapter;
+    SwipeRefreshLayout mySwipeRefreshLayout;
 
     public ShowDetailsFragment() {
         // Required empty public constructor
@@ -71,6 +74,9 @@ public class ShowDetailsFragment extends Fragment {
             showViewModel.setShow(show);
             showViewModel.loadShowDetails(Integer.toString(show.getTrakt_id()));
         }
+
+
+
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(MovieViewModel.DETAILS_LOADED);
         intentFilter.addAction(MovieViewModel.ADDED_WATCHLIST);
@@ -95,6 +101,17 @@ public class ShowDetailsFragment extends Fragment {
         setupActionMenu(v);
         showViewModel.getSeasons();
 
+        mySwipeRefreshLayout = v.findViewById(R.id.maincontent);
+        mySwipeRefreshLayout.setRefreshing(true);
+
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        showViewModel.loadShowDetails(Integer.toString(show.getTrakt_id()));
+                    }
+                }
+        );
 
         return v;
     }
@@ -178,6 +195,7 @@ public class ShowDetailsFragment extends Fragment {
                 if(fragment.getView() != null) {
                     TextView title_tv = fragment.getView().findViewById(R.id.moviedetails_description);
                     title_tv.setText(show.getTitle());
+                    mySwipeRefreshLayout.setRefreshing(false);
 
                 }
             }else if(MovieViewModel.ADDED_WATCHLIST.equals(intent.getAction())){
@@ -197,6 +215,7 @@ public class ShowDetailsFragment extends Fragment {
             }else if(MovieViewModel.GOT_SEASONS.equals(intent.getAction())){
                 if(getView() != null) {
                     Toast.makeText(context, "Got Seasons", Toast.LENGTH_LONG).show();
+                    mySwipeRefreshLayout.setRefreshing(false);
 
                     String[] seasons = new String[showViewModel.getNumSeasons()];
                     for (int i = 0; i < showViewModel.getNumSeasons(); i++) {
@@ -205,18 +224,20 @@ public class ShowDetailsFragment extends Fragment {
 
                     setupSeasonSpinner(getView(), 1, seasons);
 
-
-                    ArrayList<Episode> list = new ArrayList<>();
-                    for (Episode episode : showViewModel.getEpisodes(1)) {
-                        list.add(episode);
+                    try {
+                        ArrayList<Episode> list = showViewModel.getEpisodes(1);
+                        ListView episode_listview = fragment.getView().findViewById(R.id.episode_listview);
+                        episodeBaseAdapter = new EpisodeBaseAdapter(getActivity(), list, getResources());
+                        episode_listview.setAdapter(episodeBaseAdapter);
+                        showViewModel.getFinishedEpisodes(show.getTrakt_id());
+                        mySwipeRefreshLayout.setRefreshing(true);
+                    }catch (IndexOutOfBoundsException e){
+                        Toast.makeText(getActivity(), "Error Occurred", Toast.LENGTH_LONG).show();
+                        //Todo: show proper error screen
                     }
-                    ListView episode_listview = fragment.getView().findViewById(R.id.episode_listview);
-                    episodeBaseAdapter = new EpisodeBaseAdapter(getActivity(), list, getResources());
-                    episode_listview.setAdapter(episodeBaseAdapter);
-                    showViewModel.getFinishedEpisodes(show.getTrakt_id());
                 }
             } else if(ShowViewModel.GOT_EPISODE_DATA.equals(intent.getAction())){
-                Toast.makeText(context, "Got Episode Data!", Toast.LENGTH_LONG).show();
+                mySwipeRefreshLayout.setRefreshing(false);
                 ArrayList<Episode> list = new ArrayList<>();
                 for (Episode episode : showViewModel.getEpisodes(1)) {
                     list.add(episode);
