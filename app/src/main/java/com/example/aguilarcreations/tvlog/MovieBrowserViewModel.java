@@ -49,7 +49,6 @@ public class MovieBrowserViewModel {
         @Override
         public boolean handleMessage(Message message) {
             String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "In callback: " + msg);
             try {
                 popularMovies = new ArrayList<>();
                 JSONArray jsonArray = new JSONArray(msg);
@@ -66,7 +65,6 @@ public class MovieBrowserViewModel {
 
             }catch (JSONException e){
                 e.printStackTrace();
-                Log.e("Alejandro", "Error getPopularMoviesCallback: " + e.toString());
             }
 
             Intent intent = new Intent();

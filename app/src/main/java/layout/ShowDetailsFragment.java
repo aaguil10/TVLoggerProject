@@ -174,7 +174,6 @@ public class ShowDetailsFragment extends Fragment {
     BroadcastReceiver showReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e("Alejandro", "-----action: " + intent.getAction());
             if(MovieViewModel.DETAILS_LOADED.equals(intent.getAction())){
                 if(fragment.getView() != null) {
                     TextView title_tv = fragment.getView().findViewById(R.id.moviedetails_description);

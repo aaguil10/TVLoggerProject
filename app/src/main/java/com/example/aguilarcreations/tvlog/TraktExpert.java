@@ -59,15 +59,8 @@ public class TraktExpert {
         serverCall.execute(apiGateWayUrl+add_watchlist_function, callback, generateTransportString(show));
     }
 
-    public static void markFinished(Episode episode, Handler.Callback callback){
-        ServerCall serverCall = new ServerCall();
-        Log.d("Alejandro", "TraktExp.markFinished called: " + apiGateWayUrl+add_history_function);
-        serverCall.execute(apiGateWayUrl+add_history_function, callback, "Fuck");
-        Log.d("Alejandro", "Tacos");
-    }
-
     public static void markUnwatched(Episode episode, Handler.Callback callback){
-        ServerCall serverCall = new ServerCall();
+        //ServerCall serverCall = new ServerCall();
         //serverCall.execute(apiGateWayUrl+add_watchlist_function, callback, generateTransportString(episode));
     }
 

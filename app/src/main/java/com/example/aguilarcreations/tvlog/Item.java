@@ -22,37 +22,6 @@ public class Item {
     private String imdb_id;
     private int tmdb;
 
-    //tv ids
-//    private int tvdb_id;
-//    private int tvrage;
-
-    //added from movie details
-//    private String overview;
-//    private int runtime;
-//    private String trailer;
-//    private String homepage;
-//    private long rating;
-//    private int votes;
-//    private String updated_at;
-//    private String language;
-//    private String[] available_translations;
-//    private String[] genres;
-//    private String certification;
-
-    //Item Specific
-//    private String tagline;
-//    private String released;
-
-    //com.example.aguilarcreations.tvlog.Show Specific
-//    private String first_aired;
-//    private String airs_day;
-//    private String airs_time;
-//    private String airs_timezone;
-//    private String network;
-//    private String country;
-//    private String status;
-//    private int aired_episodes;
-
 
     //added in history
     private int history_id;
@@ -69,7 +38,6 @@ public class Item {
     public static Item createMovieFromJson(JSONObject j, String state) throws JSONException{
         Item movie = new Item();
         movie.state = state;
-        //JSONObject j = new JSONObject(json);
         movie.setTitle(j.getString("title"));
         movie.setYear(j.optInt("year"));
         JSONObject ids = j.optJSONObject("ids");
@@ -80,45 +48,6 @@ public class Item {
 
         return movie;
     }
-
-
-//    public void addDetails(JSONObject j, boolean isMovieMode) throws JSONException{
-//        Log.d("Alejandro", "addDetails j: " + j.toString());
-//        this.overview = j.getString("overview");
-//        Log.d("Alejandro", "this.overview: " + this.overview);
-//        this.runtime = j.getInt("runtime");
-//        this.trailer = j.optString("trailer");
-//        this.homepage = j.optString("homepage");
-//        this.rating = j.optLong("rating");
-//        this.votes = j.optInt("votes");
-//        this.updated_at = j.getString("updated_at");
-//        this.language = j.optString("language");
-//        this.certification = j.getString("certification");
-//        JSONArray translations = j.getJSONArray("available_translations");
-//        this.available_translations = new String[translations.length()];
-//        for(int i = 0; i < translations.length(); i++)
-//            this.available_translations[i] = translations.getString(i);
-//        JSONArray genres = j.getJSONArray("genres");
-//        this.genres = new String[genres.length()];
-//        for(int i = 0; i < genres.length(); i++)
-//            this.genres[i] = genres.getString(i);
-//
-//        if(isMovieMode){
-//            this.tagline = j.optString("tagline");
-//            this.released = j.getString("released");
-//        }else{
-//            this.first_aired = j.optString("first_aired");
-//            this.network = j.optString("network");
-//            this.country = j.optString("country");
-//            this.status = j.optString("status");
-//            this.aired_episodes = j.getInt("aired_episodes");
-//            JSONObject airs = j.optJSONObject("airs");
-//            this.airs_day = airs.getString("day");
-//            this.airs_time = airs.getString("time");
-//            this.airs_timezone = airs.getString("timezone");
-//        }
-//
-//    }
 
     public void setState(String state){
         if(Item.BROWSE.equals(state) ||

@@ -120,10 +120,8 @@ public class Show extends Item{
                 Log.d("addShowData", "seasons: " + seasons.size());
                 ArrayList<Episode> episodes;
                 if(seasons.size() > curr_season) {
-                    Log.d("Alejandro", "Got Season " + curr_season);
                     episodes = seasons.get(curr_season);
                 }else {
-                    Log.d("Alejandro", "New Season " + curr_season);
                     episodes = new ArrayList<>();
                 }
                 JSONArray epi_arr = j.getJSONArray("episodes");
@@ -132,7 +130,6 @@ public class Show extends Item{
                     JSONObject episode_data = epi_arr.getJSONObject(x);
                     int epi_num = episode_data.getInt("number");
                     if(episodes.isEmpty() || episodes.size()+1 <= epi_num){
-                        Log.d("Alejandro", "New Episose!: " + episode_data.getBoolean("completed"));
                         Episode episode = new Episode();
                         episode.setEpiNumber(epi_num);
                         episode.setShow(this);
@@ -140,9 +137,7 @@ public class Show extends Item{
                         episode.setSeason(curr_season);
                         updated_episodes.add(episode);
                     }else {
-                        Log.d("Alejandro", "Adding to Episose!: " + episode_data.getBoolean("completed"));
                         Episode episode = episodes.get(epi_num -1);
-                        //episodes.remove(episode);
                         episode.setCompleted(episode_data.getBoolean("completed"));
                         updated_episodes.add(episode);
                     }
@@ -151,9 +146,6 @@ public class Show extends Item{
                 seasons.add(curr_season, updated_episodes);
             }
         }
-
-
-
 
     }
 

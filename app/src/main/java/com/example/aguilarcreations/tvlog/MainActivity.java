@@ -45,18 +45,14 @@ public class MainActivity extends Activity implements
             switch (item.getItemId()) {
                 case R.id.navigation_watch:
                     fragment = new WatchlistFragment();
-                    Log.d("Alejandro", "navigation_watch");
                     break;
                 case R.id.navigation_browse:
                     fragment = new MovieBrowserFragment();
-                    Log.d("Alejandro", "navigation_browse");
                     break;
                 case R.id.navigation_finished:
                     fragment = new FinishedMoviesFragment();
-                    Log.d("Alejandro", "navigation_finished");
                     break;
                 default:
-                    Log.d("Alejandro", "default");
                     fragment = new WatchlistFragment();
             }
             fragmentTransaction.replace(R.id.content, fragment);
@@ -89,11 +85,9 @@ public class MainActivity extends Activity implements
                 return true;
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
-                Log.d("Alejandro", "Clicked Settings Button");
                 return true;
             case R.id.action_tv_toggle:
                 // User chose the "Settings" item, show the app settings UI...
-                Log.d("Alejandro", "Clicked TV Toggle Button");
                 if(media_mode.equals(MOVIE_MODE)) {
                     item.setTitle("Item");
                     media_mode = TV_MODE;
@@ -103,7 +97,6 @@ public class MainActivity extends Activity implements
                 }
                 SharedPreferences settings = getSharedPreferences("MainActivity", 0);
                 SharedPreferences.Editor editor = settings.edit();
-                Log.d("Alejandro", "Saving:  " + media_mode);
                 editor.putString("media_mode", media_mode);
                 editor.commit();
 
@@ -119,7 +112,6 @@ public class MainActivity extends Activity implements
         Log.d("Lifecycle", "MainActivity onCreate");
         SharedPreferences settings = getSharedPreferences("MainActivity", 0);
         media_mode = settings.getString("media_mode", MOVIE_MODE);
-        Log.d("Alejandro", "--media_mode: " + media_mode);
 
         if(media_mode.equals(TV_MODE)){
             setTheme(R.style.TVTheme);
@@ -130,8 +122,6 @@ public class MainActivity extends Activity implements
         setContentView(R.layout.activity_main);
         movieViewModel = MovieViewModel.getInstance(getBaseContext());
         showViewModel = ShowViewModel.getInstance(getBaseContext());
-        Log.d("Alejandro", "activity.movieViewModel: " + movieViewModel);
-        Log.d("Alejandro", "activity.showViewModel: " + showViewModel);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -142,11 +132,6 @@ public class MainActivity extends Activity implements
         WatchlistFragment fragment = new WatchlistFragment();
         fragmentTransaction.add(R.id.content, fragment);
         fragmentTransaction.commit();
-
-//        Toolbar myToolbar = (Toolbar) this.findViewById(R.id.toolbar);
-//        myToolbar.setTitle("Tacos");
-//        setActionBar(myToolbar);
-        //ActionBar actionBar = v.getActionBar();
 
 
     }
@@ -193,7 +178,6 @@ public class MainActivity extends Activity implements
     }
 
     public void onEpisodeSelected(Episode episode){
-        Log.d("Alejandro", "onEpisodeSelected episode: " + episode.toString());
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         MovieDetailsFragment fragment = MovieDetailsFragment.newInstance(episode);

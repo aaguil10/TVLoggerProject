@@ -33,7 +33,6 @@ public class WatchlistViewModel {
 
     public static WatchlistViewModel getInstance(WatchlistFragment fragment) {
         if(instance == null){
-            Log.d("Alejandro", "WatchlistViewModel was created!");
             instance = new WatchlistViewModel();
             instance.fragment = fragment;
             instance.context = fragment.getActivity().getBaseContext();
@@ -52,7 +51,6 @@ public class WatchlistViewModel {
         @Override
         public boolean handleMessage(Message message) {
             String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "getCurrentShowsCallback: " + msg);
             try {
                 if(watchlist == null) {
                     watchlist = new ArrayList<>();
@@ -67,7 +65,6 @@ public class WatchlistViewModel {
                 }
             }catch (JSONException e){
                 e.printStackTrace();
-                Log.e("Alejandro", "Error getWatchlistCallback: " + e.toString());
             }
 
             Intent intent = new Intent();
@@ -83,7 +80,6 @@ public class WatchlistViewModel {
         @Override
         public boolean handleMessage(Message message) {
             String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "In callback: " + msg);
             try {
                 watchlist = new ArrayList<>();
                 JSONArray jsonArray = new JSONArray(msg);
@@ -100,7 +96,6 @@ public class WatchlistViewModel {
 
             }catch (JSONException e){
                 e.printStackTrace();
-                Log.e("Alejandro", "Error getWatchlistCallback: " + e.toString());
             }
 
             Intent intent = new Intent();

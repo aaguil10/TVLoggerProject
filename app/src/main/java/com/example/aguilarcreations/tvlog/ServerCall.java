@@ -37,7 +37,6 @@ public class ServerCall extends AsyncTask {
     protected String doInBackground(Object[] objects) {
         String connection_url = "";
         HashMap<String, String> postDataParams = new HashMap<>();
-        Log.d("Alejandro", "objects.length: " + objects.length);
         if(objects.length > 0){
             connection_url = (String)objects[0];
         }else{
@@ -60,7 +59,6 @@ public class ServerCall extends AsyncTask {
             urlConnection.setReadTimeout(TIMEOUT_VALUE);
 
             if(doPost) {
-                Log.d("Alejandro", "In do post");
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setDoInput(true);
                 urlConnection.setDoOutput(true);
@@ -80,7 +78,7 @@ public class ServerCall extends AsyncTask {
                 result.append(line);
             }
         }catch (Exception e) {
-            Log.d("Alejandro", "error e: " + e.toString());
+            e.printStackTrace();
         }finally {
             if(urlConnection != null)
                 urlConnection.disconnect();
@@ -93,7 +91,6 @@ public class ServerCall extends AsyncTask {
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
         String result = (String) o;
-        Log.d("Alejandro", "line: " + result.toString());
         if(callback != null){
             Message m = new Message();
             Bundle d = new Bundle();

@@ -72,7 +72,6 @@ public class MovieBrowserFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Item movie = (Item) adapterView.getItemAtPosition(i);
                 mListener.onItemSelected(movie);
-                Log.d("Alejandro", "Clicked on: " + movie.getTitle());
             }
         });
         if(isMovieMode()) {
@@ -152,7 +151,6 @@ public class MovieBrowserFragment extends Fragment {
     BroadcastReceiver movieReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e("Alejandro", "action: " + intent.getAction());
             if(MovieBrowserViewModel.POPULAR_UPDATED.equals(intent.getAction())){
                 ArrayList<Item> movies = browserViewModel.getPopularMovies();
                 MovieBaseAdapter adapter = new MovieBaseAdapter(getActivity(), movies, getResources());

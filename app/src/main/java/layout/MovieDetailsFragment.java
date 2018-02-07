@@ -127,7 +127,6 @@ public class MovieDetailsFragment extends Fragment {
 
     private void setupActionMenu(View v){
         if(movie != null) {
-            Log.d("Alejandro", "In movie...");
             FloatingActionMenuAnimator.BtnData[] btnData = new FloatingActionMenuAnimator.BtnData[3];
             btnData[0] = new FloatingActionMenuAnimator.BtnData("Stop Tracking", R.drawable.ic_remove_black_24dp);
             btnData[1] = new FloatingActionMenuAnimator.BtnData("Add to Finshed", R.drawable.ic_playlist_add_check_black_24dp);
@@ -153,7 +152,6 @@ public class MovieDetailsFragment extends Fragment {
                 }
             });
         }else if(episode != null){
-            Log.d("Alejandro", "In episodes...");
             FloatingActionMenuAnimator.BtnData[] btnData = new FloatingActionMenuAnimator.BtnData[2];
             btnData[0] = new FloatingActionMenuAnimator.BtnData("Mark Unwatched", R.drawable.ic_add_circle_black_24dp);
             btnData[1] = new FloatingActionMenuAnimator.BtnData("---Mark Finished", R.drawable.ic_check_circle_black_24dp);
@@ -170,10 +168,7 @@ public class MovieDetailsFragment extends Fragment {
                     movieViewModel.addToFinshed();
                 }
             });
-        }else {
-            Log.d("Alejandro", "Nada..");
         }
-
     }
 
 
@@ -208,7 +203,6 @@ public class MovieDetailsFragment extends Fragment {
     BroadcastReceiver movieReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e("Alejandro", "action: " + intent.getAction());
             if(MovieViewModel.DETAILS_LOADED.equals(intent.getAction())){
                 if(fragment.getView() != null) {
                     TextView title_tv = fragment.getView().findViewById(R.id.moviedetails_description);

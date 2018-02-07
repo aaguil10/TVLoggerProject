@@ -66,7 +66,6 @@ public class WatchlistFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Item movie = (Item) adapterView.getItemAtPosition(i);
                 mListener.onItemSelected(movie);
-                Log.d("Alejandro", "Clicked on: " + movie.getTitle());
             }
         });
 
@@ -146,7 +145,6 @@ public class WatchlistFragment extends Fragment {
     BroadcastReceiver watchlistReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d("Alejandro", "action: " + intent.getAction());
             if(WatchlistViewModel.WATCHLIST_UPDATED.equals(intent.getAction())){
                 ArrayList<Item> movies = watchlistViewModel.getWatchlist();
                 MovieBaseAdapter adapter = new MovieBaseAdapter(getActivity(), movies, getResources());

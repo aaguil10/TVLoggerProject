@@ -49,7 +49,6 @@ public class FinishedMoviesViewModel {
         @Override
         public boolean handleMessage(Message message) {
             String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "In callback: " + msg);
             try {
                 finishedrMovies = new ArrayList<>();
                 JSONArray jsonArray = new JSONArray(msg);
@@ -69,13 +68,11 @@ public class FinishedMoviesViewModel {
                         }
                     }catch (JSONException e){
                         e.printStackTrace();
-                        Log.d("Alejandro", "getFishedMoviesCallback e: " + e.toString());
                     }
                 }
 
             }catch (JSONException e){
                 e.printStackTrace();
-                Log.e("Alejandro", "Error getPopularMoviesCallback: " + e.toString());
             }
 
             Intent intent = new Intent();

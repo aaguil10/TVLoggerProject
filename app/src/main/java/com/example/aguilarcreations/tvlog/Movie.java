@@ -62,9 +62,7 @@ public class Movie extends Item{
     }
 
     public void addDetails(JSONObject j) throws JSONException {
-        Log.d("Alejandro", "addDetails j: " + j.toString());
         this.overview = j.getString("overview");
-        Log.d("Alejandro", "this.overview: " + this.overview);
         this.runtime = j.getInt("runtime");
         this.trailer = j.optString("trailer");
         this.homepage = j.optString("homepage");

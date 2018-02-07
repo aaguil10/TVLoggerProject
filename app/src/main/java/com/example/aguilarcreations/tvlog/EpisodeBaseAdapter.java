@@ -96,7 +96,6 @@ public class EpisodeBaseAdapter extends BaseAdapter {
                 TraktExpert.addToFinished(episode, addToFinishedCallback);
             }
         });
-        Log.d("Alejandro", episode.getEpi_number()+ ": "+ episode.getCompleted());
         if(episode.getCompleted()){
             episodeHolder.epi_details_button.setImageDrawable(
                     view.getResources().getDrawable(R.drawable.ic_check_circle_black_24dp) );
@@ -113,7 +112,6 @@ public class EpisodeBaseAdapter extends BaseAdapter {
         @Override
         public boolean handleMessage(Message message) {
             String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "addToFinishedCallback msg: " + msg);
             return false;
         }
     };

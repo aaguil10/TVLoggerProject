@@ -47,12 +47,10 @@ public class MovieViewModel {
     }
 
     public void loadMovieDetails(String id){
-        Log.d("Alejandro", "Calling loadMovieDetails");
         TraktExpert.getMovieDetails(id, false, getDetailsCallback);
     }
 
     public void loadEpisodeDetails(String showid, String season_num, String episode_num){
-        Log.d("Alejandro", "Calling loadEpisodeDetails");
         TraktExpert.getEpisodeDetails(showid, season_num, episode_num,getEpisodesDetailsCallback);
     }
 
@@ -61,14 +59,11 @@ public class MovieViewModel {
         @Override
         public boolean handleMessage(Message message) {
             String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "getDetailsCallback msg: " + msg);
             try {
                 JSONObject j = new JSONObject(msg);
                 movie.addDetails(j);
-                Log.d("Alejandro", "m: " + movie.toString());
             }catch (JSONException e){
                 e.printStackTrace();
-                Log.e("Alejandro", "Error getDetailsCallback: " + e.toString());
             }
 
             Intent intent = new Intent();
@@ -79,42 +74,32 @@ public class MovieViewModel {
     };
 
     public void addToWatchlist(){
-        Log.d("Alejandro", "Calling addToWatchlist");
         if(movie != null) {
             TraktExpert.addToWatchlist(movie, addWatchlistCallback);
         }
     }
 
     public void removeWatchlist(){
-        Log.d("Alejandro", "Calling removeWatchlist");
         TraktExpert.removeWatchlist(movie, removeWatchlistCallback);
     }
 
     public void addToFinshed(){
-        Log.d("Alejandro", "Calling addToFinshed");
         if(movie != null) {
-            Log.d("Alejandro", "Calling in Movie");
             TraktExpert.addToFinished(movie, addFinishedCallback);
         }else if(episode != null){
-            Log.d("Alejandro", "Calling in Episode");
             TraktExpert.addToFinished(episode, addFinishedCallback);
-        }else {
-            Log.d("Alejandro", "No Mojo!");
         }
     }
 
     public void removeFinshed(){
-        Log.d("Alejandro", "Calling removeFinshed");
         TraktExpert.removedFromFinished(movie, removedFinishedCallback);
     }
 
     public void markFinished(Episode episode){
-        Log.d("Alejandro", "Calling markFinished");
         TraktExpert.addToFinished(episode, markFinishedCallback);
     }
 
     public void markUnwatched(Episode episode){
-        Log.d("Alejandro", "Calling markUnwatched");
         TraktExpert.markUnwatched(episode, markUnwatchedCallback);
     }
 
@@ -125,7 +110,6 @@ public class MovieViewModel {
         @Override
         public boolean handleMessage(Message message) {
             String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "addWatchlistCallback msg: " + msg);
 
             Intent intent = new Intent();
             intent.setAction(ADDED_WATCHLIST);
@@ -138,7 +122,6 @@ public class MovieViewModel {
         @Override
         public boolean handleMessage(Message message) {
             String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "removeWatchlistCallback msg: " + msg);
 
             Intent intent = new Intent();
             intent.setAction(REMOVED_WATCHLIST);
@@ -150,9 +133,6 @@ public class MovieViewModel {
     private Handler.Callback addFinishedCallback = new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
-            String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "addFinishedCallback msg: " + msg);
-
             Intent intent = new Intent();
             intent.setAction(ADDED_FINISHED);
             LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
@@ -163,9 +143,6 @@ public class MovieViewModel {
     private Handler.Callback removedFinishedCallback = new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
-            String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "removedFinishedCallback msg: " + msg);
-
             Intent intent = new Intent();
             intent.setAction(REMOVED_FINISHED);
             LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
@@ -177,8 +154,6 @@ public class MovieViewModel {
         @Override
         public boolean handleMessage(Message message) {
             String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "markFinshedCallback msg: " + msg);
-
             return false;
         }
     };
@@ -187,8 +162,6 @@ public class MovieViewModel {
         @Override
         public boolean handleMessage(Message message) {
             String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "markUnwatchedCallback msg: " + msg);
-
             return false;
         }
     };
@@ -197,8 +170,6 @@ public class MovieViewModel {
         @Override
         public boolean handleMessage(Message message) {
             String msg = message.getData().getString(ServerCall.GET_MESSAGE);
-            Log.d("Alejandro", "-------getEpisodesCallback msg: " + msg);
-
             return false;
         }
     };
