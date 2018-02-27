@@ -8,7 +8,9 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.renderscript.RSInvalidStateException;
 import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.widget.BottomNavigationView;
 import android.view.View;
 import android.widget.Toolbar;
@@ -124,9 +126,7 @@ public class MainActivity extends Activity implements
         movieViewModel = MovieViewModel.getInstance(getBaseContext());
         showViewModel = ShowViewModel.getInstance(getBaseContext());
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
+        setupBottomNav();
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -135,6 +135,24 @@ public class MainActivity extends Activity implements
         fragmentTransaction.commit();
 
 
+    }
+
+
+
+    private void setupBottomNav() throws IllegalStateException{
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        BottomNavigationItemView watch_btn = findViewById(R.id.navigation_watch);
+        BottomNavigationItemView finshed_btn = findViewById(R.id.navigation_finished);
+        if(TV_MODE.equals(media_mode)){ //Error is a bug from android studio.
+            watch_btn.setTitle(getString(R.string.title_watching));
+            finshed_btn.setTitle(getString(R.string.title_watch));
+        }else if(MOVIE_MODE.equals(media_mode)){
+            watch_btn.setTitle(getString(R.string.title_watch));
+            finshed_btn.setTitle(getString(R.string.title_finished));
+        }else {
+            throw new IllegalStateException();
+        }
     }
 
 
@@ -163,6 +181,10 @@ public class MainActivity extends Activity implements
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         MovieDetailsFragment fragment = MovieDetailsFragment.newInstance(movie);
+        Bundle bundle = new Bundle();
+        bundle.putString("parent_page", "watchlist");
+        fragment.setArguments(bundle);
+
         fragmentTransaction.replace(R.id.content, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
@@ -170,9 +192,19 @@ public class MainActivity extends Activity implements
     }
 
     public void onShowSelected(Show show){
+        Log.d("Alejandro", "onShowSelected called");
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         ShowDetailsFragment fragment = ShowDetailsFragment.newInstance(show);
+        Bundle bundle = new Bundle();
+        if(isFragment(WatchlistFragment.class.getName())) {
+            bundle.putString("parent_page", Show.SHOW_STATE_WATCH);
+        }else if(isFragment(MovieBrowserFragment.class.getName())){
+            bundle.putString("parent_page", Show.SHOW_STATE_NOT_TRACKED);
+        }else if(isFragment(FinishedMoviesFragment.class.getName())){
+            bundle.putString("parent_page", Show.SHOW_STATE_WATCHLIST);
+        }
+        fragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.content, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
@@ -185,6 +217,14 @@ public class MainActivity extends Activity implements
         fragmentTransaction.replace(R.id.content, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    private boolean isFragment(String fragmentName){
+        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.content);
+        if(currentFragment.getClass().getName().equals(fragmentName)){
+            return true;
+        }
+        return false;
     }
 
 

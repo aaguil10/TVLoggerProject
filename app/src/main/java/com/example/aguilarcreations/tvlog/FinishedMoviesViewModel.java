@@ -42,7 +42,11 @@ public class FinishedMoviesViewModel {
 
 
     public void loadFinishedMovies(){
-        TraktExpert.getFinished(getFishedMoviesCallback);
+        if(fragment.isMovieMode()) {
+            TraktExpert.getFinished(getFishedMoviesCallback);
+        }else {
+            TraktExpert.getTVWatchlist(getFishedMoviesCallback);
+        }
     }
 
     private Handler.Callback getFishedMoviesCallback = new Handler.Callback() {

@@ -18,6 +18,12 @@ public class Show extends Item{
     private int tvdb_id;
     private int tvrage;
 
+    public static String SHOW_STATE_WATCH= "watch";
+    public static String SHOW_STATE_NOT_TRACKED = "not tracked";
+    public static String SHOW_STATE_WATCHLIST = "watchlist";
+    public String SHOW_STATE = SHOW_STATE_NOT_TRACKED;
+
+
 
     private String first_aired;
     private String airs_day;

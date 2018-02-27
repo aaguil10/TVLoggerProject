@@ -75,8 +75,6 @@ public class ShowDetailsFragment extends Fragment {
             showViewModel.loadShowDetails(Integer.toString(show.getTrakt_id()));
         }
 
-
-
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(MovieViewModel.DETAILS_LOADED);
         intentFilter.addAction(MovieViewModel.ADDED_WATCHLIST);
@@ -99,6 +97,13 @@ public class ShowDetailsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_show_details, container, false);
         setupActionBar();
         setupActionMenu(v);
+
+        String parent_page = getArguments().getString("parent_page");
+        show.SHOW_STATE = parent_page;
+
+        TextView show_state_view = v.findViewById(R.id.moviedetails_state);
+        show_state_view.setText("Status: " + show.SHOW_STATE);
+
         showViewModel.getSeasons();
 
         mySwipeRefreshLayout = v.findViewById(R.id.maincontent);
@@ -158,21 +163,22 @@ public class ShowDetailsFragment extends Fragment {
 
     private void setupActionMenu(View v){
         FloatingActionMenuAnimator.BtnData[] btnData = new FloatingActionMenuAnimator.BtnData[2];
-        btnData[0] = new FloatingActionMenuAnimator.BtnData("Stop Tracking",R.drawable.ic_remove_black_24dp);
-        btnData[1] = new FloatingActionMenuAnimator.BtnData("Start Tracking",R.drawable.ic_watchlist_black_24dp);
-        FloatingActionMenuAnimator floatingActionMenuAnimator = FloatingActionMenuAnimator.build(v, btnData);
-        floatingActionMenuAnimator.getActionButton(0).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showViewModel.stopTracking();
-            }
-        });
-        floatingActionMenuAnimator.getActionButton(1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showViewModel.startTracking();
-            }
-        });
+//        btnData[0] = new FloatingActionMenuAnimator.BtnData("Stop Tracking",R.drawable.ic_remove_black_24dp);
+//        btnData[1] = new FloatingActionMenuAnimator.BtnData("Start Tracking",R.drawable.ic_watchlist_black_24dp);
+//        FloatingActionMenuAnimator floatingActionMenuAnimator = FloatingActionMenuAnimator.build(v, btnData);
+//        floatingActionMenuAnimator.getActionButton(0).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                showViewModel.stopTracking();
+//            }
+//        });
+//        floatingActionMenuAnimator.getActionButton(1).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                showViewModel.startTracking();
+//            }
+//        });
+
     }
 
     @Override
@@ -195,6 +201,7 @@ public class ShowDetailsFragment extends Fragment {
                 if(fragment.getView() != null) {
                     TextView title_tv = fragment.getView().findViewById(R.id.moviedetails_description);
                     title_tv.setText(show.getTitle());
+
                     mySwipeRefreshLayout.setRefreshing(false);
 
                 }

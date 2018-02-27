@@ -71,7 +71,7 @@ public class WatchlistFragment extends Fragment {
 
         watchlistViewModel.loadWatchlist();
 
-        //setUpActionbar();
+        setUpActionbar();
 
         mySwipeRefreshLayout = v.findViewById(R.id.swiperefresh);
         mySwipeRefreshLayout.setRefreshing(true);

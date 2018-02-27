@@ -43,8 +43,11 @@ public class WatchlistViewModel {
 
     public void loadWatchlist(){
 
-        TraktExpert.getWatchlist(getWatchlistCallback);
-        TraktExpert.getCurrentShows(getCurrentShowsCallback);
+        if(fragment.isMovieMode()) {
+            TraktExpert.getMovieWatchlist(getWatchlistCallback);
+        }else {
+            TraktExpert.getCurrentShows(getCurrentShowsCallback);
+        }
     }
 
     private Handler.Callback getCurrentShowsCallback = new Handler.Callback() {

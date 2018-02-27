@@ -14,7 +14,8 @@ public class TraktExpert {
 
     private static String apiGateWayUrl = "http://ec2-34-234-70-85.compute-1.amazonaws.com:8080/";
     private static String popular_movies_function = "browse/getPopularMovies";
-    private static String get_watchlist_function = "watchlist/getWatchList";
+    private static String get_movwatchlist_function = "watchlist/getMovieWatchList";
+    private static String get_tvwatchlist_function = "watchlist/getTVWatchList";
     private static String get_current_shows_function = "watchlist/getCurrentShows";
     private static String add_watchlist_function = "watchlist/addToWatchList";
     private static String remove_watchlist_function = "watchlist/removeFromWatchList";
@@ -37,42 +38,9 @@ public class TraktExpert {
         serverCall.execute(apiGateWayUrl+popular_movies_function+opt, callback);
     }
 
-
-    public static void getWatchlist(Handler.Callback callback){
-
-        ServerCall serverCall = new ServerCall();
-        serverCall.execute(apiGateWayUrl+get_watchlist_function, callback);
-    }
-
-    public static void getCurrentShows(Handler.Callback callback){
-        ServerCall serverCall = new ServerCall();
-        serverCall.execute(apiGateWayUrl+get_current_shows_function, callback);
-    }
-
-    public static void addToWatchlist(Movie movie, Handler.Callback callback){
-        ServerCall serverCall = new ServerCall();
-        serverCall.execute(apiGateWayUrl+add_watchlist_function, callback, generateTransportString(movie));
-    }
-
-    public static void addToWatchlist(Show show, Handler.Callback callback){
-        ServerCall serverCall = new ServerCall();
-        serverCall.execute(apiGateWayUrl+add_watchlist_function, callback, generateTransportString(show));
-    }
-
     public static void markUnwatched(Episode episode, Handler.Callback callback){
         //ServerCall serverCall = new ServerCall();
         //serverCall.execute(apiGateWayUrl+add_watchlist_function, callback, generateTransportString(episode));
-    }
-
-
-    public static void removeWatchlist(Movie movie, Handler.Callback callback){
-        ServerCall serverCall = new ServerCall();
-        serverCall.execute(apiGateWayUrl+remove_watchlist_function, callback, generateTransportString(movie));
-    }
-
-    public static void removeWatchlist(Show show, Handler.Callback callback){
-        ServerCall serverCall = new ServerCall();
-        serverCall.execute(apiGateWayUrl+remove_watchlist_function, callback, generateTransportString(show));
     }
 
     public static void getFinished(Handler.Callback callback){
@@ -137,5 +105,47 @@ public class TraktExpert {
         String s = "{\"episodes\": [{\"ids\": {\"imdb\": \"" + episode.getImdb_id() +"\"}}]}";
         return s;
     }
+
+//    Movie Calls
+
+    public static void getMovieWatchlist(Handler.Callback callback){
+        ServerCall serverCall = new ServerCall();
+        serverCall.execute(apiGateWayUrl+get_movwatchlist_function, callback);
+    }
+
+    public static void addToWatchlist(Movie movie, Handler.Callback callback){
+        ServerCall serverCall = new ServerCall();
+        serverCall.execute(apiGateWayUrl+add_watchlist_function, callback, generateTransportString(movie));
+    }
+
+    public static void removeWatchlist(Movie movie, Handler.Callback callback){
+        ServerCall serverCall = new ServerCall();
+        serverCall.execute(apiGateWayUrl+remove_watchlist_function, callback, generateTransportString(movie));
+    }
+
+//    TV Calls
+
+    public static void getCurrentShows(Handler.Callback callback){
+        ServerCall serverCall = new ServerCall();
+        serverCall.execute(apiGateWayUrl+get_current_shows_function, callback);
+    }
+
+    public static void getTVWatchlist(Handler.Callback callback){
+        ServerCall serverCall = new ServerCall();
+        serverCall.execute(apiGateWayUrl+get_tvwatchlist_function, callback);
+    }
+
+    public static void addToWatchlist(Show show, Handler.Callback callback){
+        ServerCall serverCall = new ServerCall();
+        serverCall.execute(apiGateWayUrl+add_watchlist_function, callback, generateTransportString(show));
+    }
+
+    public static void removeWatchlist(Show show, Handler.Callback callback){
+        ServerCall serverCall = new ServerCall();
+        serverCall.execute(apiGateWayUrl+remove_watchlist_function, callback, generateTransportString(show));
+    }
+
+
+
 
 }

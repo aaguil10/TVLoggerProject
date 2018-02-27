@@ -79,7 +79,7 @@ public class MovieViewModel {
             String msg = message.getData().getString(ServerCall.GET_MESSAGE);
             try {
                 JSONObject j = new JSONObject(msg);
-                episode.createEpisodeFromJson(j, "yes");
+                episode.createEpisodeFromJson(j, Item.BROWSE);
             }catch (JSONException e){
                 e.printStackTrace();
             }
